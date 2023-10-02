@@ -25,7 +25,7 @@ maintainers = [
 ]
 dependencies = [
     "torch",
-    "transformers",
+    "transformers>=4.32.0",
 ]
 dynamic = ["version"]
 
@@ -43,7 +43,8 @@ dev = [
 Repository = "https://github.com/tomaarsen/attention_sinks"
 
 [tool.setuptools.packages.find]
-include = ["attention_sinks"]
+include = ["attention_sinks*"]
+exclude = ["models/*"]
 
 [tool.setuptools.dynamic]
 version = {attr = "attention_sinks.__version__"}
