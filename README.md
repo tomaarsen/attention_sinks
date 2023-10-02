@@ -1,6 +1,8 @@
 
 # Attention Sinks in Transformers for Infinite-length LLMs
 
+![tiny_llama_ppl](https://github.com/tomaarsen/attention_sinks/assets/37621491/3b792a68-b8aa-400f-aa32-d53df9d06f50)
+
 ## Overview
 
 * Extend existing LLMs (e.g. Llama 2) to infinite length without sacrificing efficiency and performance, without any retraining.
