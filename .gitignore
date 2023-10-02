@@ -193,6 +193,3 @@ demo.py
 
 # Ignore arrow cache files
 cache-*.arrow
-
-# Temporarily keep this script out of git:
-scripts/plot_perplexity.py
