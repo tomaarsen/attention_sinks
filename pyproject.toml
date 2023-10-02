@@ -24,6 +24,7 @@ maintainers = [
     {name = "Tom Aarsen"}
 ]
 dependencies = [
+    "torch",
     "transformers",
 ]
 dynamic = ["version"]
