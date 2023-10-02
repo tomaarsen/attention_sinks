@@ -1,1 +1,1 @@
-from .modeling_llama import LlamaModel, LlamaForCausalLM
+from .modeling_llama import LlamaModel, LlamaForCausalLM, LlamaForSequenceClassification
