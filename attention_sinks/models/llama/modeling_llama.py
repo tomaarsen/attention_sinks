@@ -1,18 +1,27 @@
 import os
 import types
 from typing import List, Optional, Tuple, Union
+
+from transformers import (
+    LlamaForCausalLM as TLlamaForCausalLM,
+)
+from transformers import (
+    LlamaForSequenceClassification as TLlamaForSequenceClassification,
+)
 from transformers import (
     LlamaModel as TLlamaModel,
+)
+from transformers import (
     LlamaPreTrainedModel as TLlamaPreTrainedModel,
-    LlamaForCausalLM as TLlamaForCausalLM,
-    LlamaForSequenceClassification as TLlamaForSequenceClassification,
+)
+from transformers import (
     PretrainedConfig,
 )
 from transformers.modeling_outputs import BaseModelOutputWithPast
-from transformers.utils import add_start_docstrings_to_model_forward
 from transformers.models.llama.modeling_llama import LLAMA_INPUTS_DOCSTRING
-from attention_sinks.attention_sink_kv_cache import AttentionSinkKVCache
+from transformers.utils import add_start_docstrings_to_model_forward
 
+from attention_sinks.attention_sink_kv_cache import AttentionSinkKVCache
 from attention_sinks.models.llama.pos_shift import enable_llama_pos_shift_attention
 
 

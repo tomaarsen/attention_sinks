@@ -3,6 +3,7 @@ Adapted from https://github.com/mit-han-lab/streaming-llm
 """
 
 from dataclasses import dataclass
+
 import torch
 
 
@@ -48,18 +49,14 @@ class AttentionSinkKVCache:
                 torch.cat(
                     [
                         self.k_slice(k, 0, self.attention_sink_size),
-                        self.k_slice(
-                            k, seq_len - self.attention_sink_window_size, seq_len
-                        ),
+                        self.k_slice(k, seq_len - self.attention_sink_window_size, seq_len),
                     ],
                     dim=self.k_seq_dim,
                 ),
                 torch.cat(
                     [
                         self.v_slice(v, 0, self.attention_sink_size),
-                        self.v_slice(
-                            v, seq_len - self.attention_sink_window_size, seq_len
-                        ),
+                        self.v_slice(v, seq_len - self.attention_sink_window_size, seq_len),
                     ],
                     dim=self.v_seq_dim,
                 ),

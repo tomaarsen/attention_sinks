@@ -4,16 +4,18 @@ Adapted from https://github.com/mit-han-lab/streaming-llm
 
 
 import math
+import types
 from typing import Optional, Tuple
 
 import torch
-from torch import nn
-import torch.utils.checkpoint
-
 import torch.nn.functional as F
-
-from transformers.models.llama.modeling_llama import LlamaAttention, rotate_half, repeat_kv
-import types
+import torch.utils.checkpoint
+from torch import nn
+from transformers.models.llama.modeling_llama import (
+    LlamaAttention,
+    repeat_kv,
+    rotate_half,
+)
 
 __all__ = ["enable_llama_pos_shift_attention"]
 

@@ -1,3 +1,2 @@
-
 from .auto import AutoModel, AutoModelForCausalLM
-from .llama import LlamaModel, LlamaForCausalLM, LlamaForSequenceClassification
+from .llama import LlamaForCausalLM, LlamaForSequenceClassification, LlamaModel

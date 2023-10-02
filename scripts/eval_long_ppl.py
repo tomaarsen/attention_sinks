@@ -2,20 +2,23 @@
 Adapted from https://github.com/mit-han-lab/streaming-llm
 """
 
-import torch
-from tqdm import tqdm
 import os
 
-from transformers import AutoModelForCausalLM, AutoTokenizer
+import torch
+
 # from attention_sinks import AutoModelForCausalLM, AutoTokenizer
 from datasets import load_dataset
 from torch.nn import CrossEntropyLoss
+from tqdm import tqdm
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
 data = load_dataset("emozilla/pg19-test", split="test")
 
 # model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-hf", device_map="auto", torch_dtype=torch.bfloat16)
 # tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf")
-model = AutoModelForCausalLM.from_pretrained("PY007/TinyLlama-1.1B-intermediate-step-480k-1T", device_map="auto", torch_dtype=torch.bfloat16)
+model = AutoModelForCausalLM.from_pretrained(
+    "PY007/TinyLlama-1.1B-intermediate-step-480k-1T", device_map="auto", torch_dtype=torch.bfloat16
+)
 tokenizer = AutoTokenizer.from_pretrained("PY007/TinyLlama-1.1B-intermediate-step-480k-1T")
 model.eval()
 
