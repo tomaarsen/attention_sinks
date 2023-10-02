@@ -1,7 +1,7 @@
 
 # Attention Sinks in Transformers for Infinite-length LLMs
 
-![tiny_llama_ppl](https://github.com/tomaarsen/attention_sinks/assets/37621491/3b792a68-b8aa-400f-aa32-d53df9d06f50)
+![llama_2_7b_ppl_vram](https://github.com/tomaarsen/attention_sinks/assets/37621491/bf9539f5-ed25-425d-b129-acef66ba0ad9)
 
 ## Overview
 
