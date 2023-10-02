@@ -6,25 +6,25 @@ import torch
 from tqdm import tqdm
 import os
 
-# from transformers import AutoModelForCausalLM, AutoTokenizer
-from attention_sinks import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer
+# from attention_sinks import AutoModelForCausalLM, AutoTokenizer
 from datasets import load_dataset
 from torch.nn import CrossEntropyLoss
 
 data = load_dataset("emozilla/pg19-test", split="test")
 
-model = AutoModelForCausalLM.from_pretrained(
-    "meta-llama/Llama-2-7b-hf", device_map="auto", torch_dtype=torch.float16
-)
+# model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-hf", device_map="auto", torch_dtype=torch.bfloat16)
+# tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf")
+model = AutoModelForCausalLM.from_pretrained("PY007/TinyLlama-1.1B-intermediate-step-480k-1T", device_map="auto", torch_dtype=torch.bfloat16)
+tokenizer = AutoTokenizer.from_pretrained("PY007/TinyLlama-1.1B-intermediate-step-480k-1T")
 model.eval()
-tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf")
 
 num_test_samples = 1
 min_test_seq_length = 100
 max_test_seq_length = 8192
 
 os.makedirs("outputs", exist_ok=True)
-with open(f"outputs/log.txt", "w") as log_file:
+with open(f"outputs/transformers.txt", "w") as log_file:
     nlls = []
     loss_fn = CrossEntropyLoss(reduction="none")
     past_key_values = None
@@ -39,14 +39,10 @@ with open(f"outputs/log.txt", "w") as log_file:
         for idx in pbar:
             input_ids = encodings.input_ids[:, idx : idx + 1].to(model.device)
             with torch.no_grad():
-                outputs = model(
-                    input_ids, past_key_values=past_key_values, use_cache=True
-                )
+                outputs = model(input_ids, past_key_values=past_key_values, use_cache=True)
                 logits = outputs.logits.view(-1, model.config.vocab_size)
                 past_key_values = outputs.past_key_values
-                label = (
-                    encodings.input_ids[:, idx + 1 : idx + 2].to(logits.device).view(-1)
-                )
+                label = encodings.input_ids[:, idx + 1 : idx + 2].to(logits.device).view(-1)
                 neg_log_likelihood = loss_fn(logits, label)
             nlls.append(neg_log_likelihood)
             pbar.set_description(
@@ -59,5 +55,5 @@ with open(f"outputs/log.txt", "w") as log_file:
 
 ppl = torch.exp(torch.stack(nlls).mean())
 print(ppl.item())
-with open(f"outputs/ppl.txt", "w") as f:
+with open(f"outputs/transformers_ppl.txt", "w") as f:
     f.write(f"{ppl.item()}\n")

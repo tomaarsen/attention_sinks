@@ -1,6 +1,6 @@
 import os
+import types
 from typing import List, Optional, Tuple, Union
-import torch
 from transformers import (
     LlamaModel as TLlamaModel,
     LlamaPreTrainedModel as TLlamaPreTrainedModel,
@@ -33,11 +33,7 @@ class LlamaPreTrainedModel(TLlamaPreTrainedModel):
         **kwargs,
     ) -> None:
         # Separate Attention Sink kwargs from regular kwargs
-        attention_sink_kwargs = {
-            key: value
-            for key, value in kwargs.items()
-            if key.startswith("attention_sink")
-        }
+        attention_sink_kwargs = {key: value for key, value in kwargs.items() if key.startswith("attention_sink")}
         for key in attention_sink_kwargs:
             kwargs.pop(key)
 
@@ -58,48 +54,45 @@ class LlamaPreTrainedModel(TLlamaPreTrainedModel):
         enable_llama_pos_shift_attention(model)
 
         # Hackishly attach the Attention Sink KV Cache to the model
-        model.attention_sink_kv_cache = AttentionSinkKVCache(
-            **attention_sink_kwargs,
-            k_seq_dim=2,
-            v_seq_dim=2,
-        )
+        cls._attach_attention_sink_kv_cache(model)
+
         return model
+
+    @classmethod
+    def _attach_attention_sink_kv_cache(cls, module, **attention_sink_kwargs):
+        if isinstance(module, TLlamaModel):
+            # Create the new cache
+            module.attention_sink_kv_cache = AttentionSinkKVCache(
+                **attention_sink_kwargs,
+                k_seq_dim=2,
+                v_seq_dim=2,
+            )
+
+            # Keep track of the old forward method, we need it in the wrapped one
+            old_forward = module.forward
+
+            # Wrap the forward by overriding the past_key_values using the cache
+            @add_start_docstrings_to_model_forward(LLAMA_INPUTS_DOCSTRING)
+            def wrapped_forward(self, *args, **kwargs) -> Union[Tuple, BaseModelOutputWithPast]:
+                outputs = old_forward(*args, **kwargs)
+                outputs.past_key_values = self.attention_sink_kv_cache(outputs.past_key_values)
+                return outputs
+
+            module.forward = types.MethodType(wrapped_forward, module)
+
+        # Recursively call this to find all LlamaModels
+        for module in reversed(module._modules.values()):
+            if len(list(module.children())) > 0:
+                cls._attach_attention_sink_kv_cache(module, **attention_sink_kwargs)
 
 
 class LlamaModel(LlamaPreTrainedModel, TLlamaModel):
-    @add_start_docstrings_to_model_forward(LLAMA_INPUTS_DOCSTRING)
-    def forward(
-        self,
-        input_ids: torch.LongTensor = None,
-        attention_mask: Optional[torch.Tensor] = None,
-        position_ids: Optional[torch.LongTensor] = None,
-        past_key_values: Optional[List[torch.FloatTensor]] = None,
-        inputs_embeds: Optional[torch.FloatTensor] = None,
-        use_cache: Optional[bool] = None,
-        output_attentions: Optional[bool] = None,
-        output_hidden_states: Optional[bool] = None,
-        return_dict: Optional[bool] = None,
-    ) -> Union[Tuple, BaseModelOutputWithPast]:
-        outputs = super().forward(
-            input_ids,
-            attention_mask,
-            position_ids,
-            past_key_values,
-            inputs_embeds,
-            use_cache,
-            output_attentions,
-            output_hidden_states,
-            return_dict,
-        )
-        outputs.past_key_values = self.attention_sink_kv_cache(past_key_values)
-        breakpoint()
-        return outputs
+    pass
+
 
 class LlamaForCausalLM(LlamaPreTrainedModel, TLlamaForCausalLM):
     pass
 
 
-class LlamaForSequenceClassification(
-    LlamaPreTrainedModel, TLlamaForSequenceClassification
-):
+class LlamaForSequenceClassification(LlamaPreTrainedModel, TLlamaForSequenceClassification):
     pass
