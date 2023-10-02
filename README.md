@@ -25,8 +25,6 @@ pip install attention_sinks
 
 ## Note
 
-I've yet to replicate all of the experiments by the original paper, although I've replicated some. I can't confirm that this indeed allows for infinite-length LLMs in theory nor in practice.
-
 More details coming soon.
 
 ## Credits
