@@ -1,0 +1,104 @@
+[build-system]
+requires = ["setuptools>=61.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "attention_sinks"
+description = "Extend LLMs to infinite length without sacrificing efficiency and performance, without retraining"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "Apache-2.0"}
+keywords = [
+    "data-science",
+    "natural-language-processing",
+    "artificial-intelligence",
+    "mlops",
+    "nlp",
+    "machine-learning",
+    "transformers"
+]
+authors = [
+    {name = "Tom Aarsen"}
+]
+maintainers = [
+    {name = "Tom Aarsen"}
+]
+dependencies = [
+    "transformers",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+dev = [
+    "pre-commit",
+    "ruff",
+    "black",
+    "pytest",
+    "pytest-cov",
+    "spacy"
+]
+
+[project.urls]
+Repository = "https://github.com/tomaarsen/attention_sinks"
+
+[tool.setuptools.packages.find]
+include = ["attention_sinks"]
+
+[tool.setuptools.dynamic]
+version = {attr = "attention_sinks.__version__"}
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests"
+]
+addopts = "--cov=attention_sinks --durations=10"
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "def __str__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "if _TYPE_CHECKING:",
+    "if typing.TYPE_CHECKING:"
+]
+
+[tool.isort]
+profile = "black"
+
+[tool.ruff]
+# Ignore line length violations
+ignore = ["E501"]
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+
+[tool.ruff.per-file-ignores]
+# Ignore imported but unused;
+"__init__.py" = ["F401"]
+
+[tool.black]
+line-length = 120
