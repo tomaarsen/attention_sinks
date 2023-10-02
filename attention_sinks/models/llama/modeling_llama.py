@@ -63,7 +63,7 @@ class LlamaPreTrainedModel(TLlamaPreTrainedModel):
         enable_llama_pos_shift_attention(model)
 
         # Hackishly attach the Attention Sink KV Cache to the model
-        cls._attach_attention_sink_kv_cache(model)
+        cls._attach_attention_sink_kv_cache(model, **attention_sink_kwargs)
 
         return model
 
