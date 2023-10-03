@@ -13,7 +13,13 @@ from transformers import (
 from transformers import (
     AutoModelForTokenClassification as TAutoModelForTokenClassification,
 )
-from transformers import FalconConfig, GPTNeoXConfig, LlamaConfig, MptConfig
+from transformers import (
+    FalconConfig,
+    GPTNeoXConfig,
+    LlamaConfig,
+    MistralConfig,
+    MptConfig,
+)
 from transformers.models.auto.modeling_auto import (
     MODEL_FOR_CAUSAL_LM_MAPPING,
     MODEL_FOR_QUESTION_ANSWERING_MAPPING,
@@ -37,6 +43,7 @@ from ..gpt_neox import (
     GPTNeoXModel,
 )
 from ..llama import LlamaForCausalLM, LlamaForSequenceClassification, LlamaModel
+from ..mistral import MistralForCausalLM, MistralForSequenceClassification, MistralModel
 from ..mpt import (
     MptForCausalLM,
     MptForQuestionAnswering,
@@ -50,18 +57,21 @@ MODEL_MAPPING._extra_content = {
     FalconConfig: FalconModel,
     MptConfig: MptModel,
     GPTNeoXConfig: GPTNeoXModel,
+    MistralConfig: MistralModel,
 }
 MODEL_FOR_CAUSAL_LM_MAPPING._extra_content = {
     LlamaConfig: LlamaForCausalLM,
     FalconConfig: FalconForCausalLM,
     MptConfig: MptForCausalLM,
     GPTNeoXConfig: GPTNeoXForCausalLM,
+    MistralConfig: MistralForCausalLM,
 }
 MODEL_FOR_SEQUENCE_CLASSIFICATION_MAPPING._extra_content = {
     LlamaConfig: LlamaForSequenceClassification,
     FalconConfig: FalconForSequenceClassification,
     MptConfig: MptForSequenceClassification,
     GPTNeoXConfig: GPTNeoXForSequenceClassification,
+    MistralConfig: MistralForSequenceClassification,
 }
 MODEL_FOR_QUESTION_ANSWERING_MAPPING._extra_content = {
     FalconConfig: FalconForQuestionAnswering,
