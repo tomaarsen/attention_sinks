@@ -92,6 +92,10 @@ Clear as day:
 
 I've uploaded [benchmark/outputs_llama_2_7b](benchmark/outputs_llama_2_7b) so you can reproduce this graph using the former command.
 
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for all release information.
+
 ## Credits
 
 Inspired by, and adapted from [StreamingLLM](https://github.com/mit-han-lab/streaming-llm).
