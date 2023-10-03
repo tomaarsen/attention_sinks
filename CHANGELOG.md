@@ -15,11 +15,19 @@ Types of changes
 * "Security" in case of vulnerabilities.
 -->
 
+## [0.2.0]
+
+### Added
+
+- Added support for Mistral models. ([#5](https://github.com/tomaarsen/attention_sinks/pull/5))
+- Added support for GPT-NeoX/Pythia models. ([#4](https://github.com/tomaarsen/attention_sinks/pull/4))
+- Added support for MPT models. ([#3](https://github.com/tomaarsen/attention_sinks/pull/3))
+
 ## [0.1.0] - 2023-10-03
 
 ### Added
 
-- Added support for Falcon models.
+- Added support for Falcon models. ([#2](https://github.com/tomaarsen/attention_sinks/pull/2))
 
 ## [0.0.1] - 2023-09-03
 
