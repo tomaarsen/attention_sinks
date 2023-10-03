@@ -15,6 +15,12 @@ Types of changes
 * "Security" in case of vulnerabilities.
 -->
 
+## [0.2.2] - 2023-10-04
+
+### Fixed
+
+- Fix `model.generate` for all model architectures. ([#6](https://github.com/tomaarsen/attention_sinks/pull/6))
+
 ## [0.2.1] - 2023-10-03
 
 ### Fixed
@@ -35,7 +41,7 @@ Types of changes
 
 - Added support for Falcon models. ([#2](https://github.com/tomaarsen/attention_sinks/pull/2))
 
-## [0.0.1] - 2023-09-03
+## [0.0.1] - 2023-10-02
 
 ### Added
 
