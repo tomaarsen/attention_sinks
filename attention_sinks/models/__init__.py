@@ -13,6 +13,14 @@ from .falcon import (
     FalconModel,
     FalconPreTrainedModel,
 )
+from .gpt_neox import (
+    GPTNeoXForCausalLM,
+    GPTNeoXForQuestionAnswering,
+    GPTNeoXForSequenceClassification,
+    GPTNeoXForTokenClassification,
+    GPTNeoXModel,
+    GPTNeoXPreTrainedModel,
+)
 from .llama import LlamaForCausalLM, LlamaForSequenceClassification, LlamaModel
 from .mpt import (
     MptForCausalLM,

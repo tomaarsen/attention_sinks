@@ -1,20 +1,25 @@
 
 # Attention Sinks in Transformers for Infinite-length LLMs
 
-| Llama 2 7B | Falcon 7B | MPT 7B |
-| ------------- | ------------- | ---- |
-| ![llama_2_7b_ppl_vram_plotted](https://github.com/tomaarsen/attention_sinks/assets/37621491/8d2e5b88-7158-41ac-8b3a-5a7abe38020d)  | ![falcon_7b_ppl_vram_plotted](https://github.com/tomaarsen/attention_sinks/assets/37621491/1be07370-6de7-4a7e-b5ab-3092a5ecb412)  | ![mpt_7b_ppl_vram_plotted](https://github.com/mit-han-lab/streaming-llm/assets/37621491/c96cff66-92a3-43ab-bc21-40232f2740a0) |
+| Llama 2 7B | Falcon 7B |
+|:-------------:|:-------------:|
+| ![llama_2_7b_ppl_vram_plotted](https://github.com/tomaarsen/attention_sinks/assets/37621491/8d2e5b88-7158-41ac-8b3a-5a7abe38020d)  | ![falcon_7b_ppl_vram_plotted](https://github.com/tomaarsen/attention_sinks/assets/37621491/1be07370-6de7-4a7e-b5ab-3092a5ecb412)  |
+| **MPT 7B** | **Pythia 6.9B** |
+| ![mpt_7b_ppl_vram_plotted](https://github.com/mit-han-lab/streaming-llm/assets/37621491/c96cff66-92a3-43ab-bc21-40232f2740a0) | ![pythia_6 8b_ppl_vram_plotted](https://github.com/tomaarsen/attention_sinks/assets/37621491/b0fee168-fa5a-457d-9e27-8395eb6dfb38)
+
 
 ## Overview
 
 * Extend existing LLMs (e.g. Llama 2) to infinite length without sacrificing efficiency and performance, without any retraining.
+  * Model perplexities were stable even after 4 million tokens!
+  * Unlike with regular `transformers`, there is no linear memory increase and no extremely slow inference due to memory issues at higher sequence lengths.
 * The `attention_sinks` API allows for a drop-in replacement of the `transformers` API:
   ```python
   from attention_sinks import AutoModel
 
   model = AutoModel.from_pretrained("meta-llama/Llama-2-7b-hf", device_map="auto")
   ```
-* Support for Llama and Falcon models.
+* Support for Llama, Falcon, MPT and GPTNeoX (Pythia) models.
 * New parameters to `AutoModel....from_pretrained`:
   * `attention_sink_size`, int, defaults to 4: The number of initial tokens to use as the attention sink. These tokens are always included in the Attention Sink KV Cache.
   * `attention_sink_window_size`, int, defaults to 1020: The size of the sliding window, i.e. the number of "recent tokens" to include in the Attention Sink KV Cache.
@@ -26,7 +31,14 @@ pip install attention_sinks
 ```
 
 ## Benchmarks
-You can run a few benchmarks to compute the perplexity of various models over time using the provided [perplexity.py](benchmark/perplexity.py) benchmarking script. For example:
+
+### Pre-prepared benchmarks
+See [benchmark/scripts](benchmark/scripts) for a collection of ready-to-go scripts for various model architectures like Llama 2, Falcon, MPT and GPT-NeoX (Pythia). Each of these scripts runs the benchmarking and plotting tools described below for pure [`transformers`](https://github.com/huggingface/transformers), [`attention_sinks`](https://github.com/tomaarsen/attention_sinks) and a third alternative: `windowed`, which involves simple windowed attention at a window size of 1024 tokens. Upon completion, the script will plot the figures that you see at the top of this README.
+
+### Benchmarking tool
+You can run a few benchmarks to compute the perplexity of various models over time using the provided [perplexity.py](benchmark/perplexity.py) benchmarking script. This is done by computing the negative log likelihood losses of the chosen model when it is provided a full book with 60k+ tokens. By default, the scripts stop after 8192 tokens, but this can be modified. An ideal solution continuously has a low log perplexity and a constant CUDA VRAM usage.
+
+To use the script, you can run:
 ```
 python benchmark/perplexity.py --experiment attention_sinks
 ```
@@ -57,7 +69,13 @@ options:
 
 This script will create a `csv` file in the output directory (`"benchmarks/outputs"` by default) for that experiment, with information about perplexities, CUDA VRAM usage and latencies.
 
-This information can be plotted using the [plot_perplexity.py](benchmark\plot_perplexity.py) script. For example:
+### Plotting tool
+The information from the benchmarking tool can be plotted using the [plot_perplexity.py](benchmark\plot_perplexity.py) script. In particular, you can plot any combination of the following features:
+* `perplexity`,
+* `vram`, i.e. CUDA VRAM usage,
+* `latency`.
+
+For example:
 ```
 python benchmark/plot_perplexity.py --features perplexity latency --title "Log perplexity & latency of Llama 2 7B as a function of input lengths"
 ```
@@ -90,7 +108,7 @@ Clear as day:
 2. `windowed`: The VRAM is constant usage due to the windowing at 1024 tokens. However, it fails as soon as the first tokens leave the window.
 3. `attention_sinks`: Constant VRAM usage due to windowing with 4 attention sink tokens + the 1020 most recent tokens. This approach never fails despite the constant VRAM usage.
 
-I've uploaded [benchmark/outputs_llama_2_7b](benchmark/outputs_llama_2_7b) so you can reproduce this graph using the former command.
+I've uploaded outputs of various benchmarks in [benchmark](benchmark) so you can reproduce this graph using the former command.
 
 ## Changelog
 
