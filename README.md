@@ -176,6 +176,8 @@ Clear as day:
 
 I've uploaded outputs of various benchmarks in [benchmark](benchmark) so you can reproduce this graph using the former command.
 
+I'm still working on benchmarking non-perplexity metrics, e.g. by continuously asking an instruct-tuned model with Attention Sinks a LLM-benchmark question (e.g. MMLU) and verifying whether it can still answer well after thousands of these questions have been provided in succession.
+
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md) for all release information.
