@@ -15,7 +15,13 @@ Types of changes
 * "Security" in case of vulnerabilities.
 -->
 
-## [0.2.0]
+## [0.2.1] - 2023-10-03
+
+### Fixed
+
+- Implemented parity between `attention_sinks` and `transformers==4.34.0` for Falcon and Llama.
+
+## [0.2.0] - 2023-10-03
 
 ### Added
 
