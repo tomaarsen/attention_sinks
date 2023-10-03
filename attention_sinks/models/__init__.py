@@ -14,3 +14,11 @@ from .falcon import (
     FalconPreTrainedModel,
 )
 from .llama import LlamaForCausalLM, LlamaForSequenceClassification, LlamaModel
+from .mpt import (
+    MptForCausalLM,
+    MptForQuestionAnswering,
+    MptForSequenceClassification,
+    MptForTokenClassification,
+    MptModel,
+    MptPreTrainedModel,
+)

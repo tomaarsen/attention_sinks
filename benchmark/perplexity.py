@@ -146,7 +146,7 @@ def main():
         **kwargs,
     )
     model.eval()
-    tokenizer = AutoTokenizer.from_pretrained(args.model_name_or_path)
+    tokenizer = AutoTokenizer.from_pretrained(args.model_name_or_path, trust_remote_code=bool(args.trust_remote_code))
 
     # Set up the dataset
     dataset = load_dataset(args.dataset_name, args.task, split=args.split, streaming=True)

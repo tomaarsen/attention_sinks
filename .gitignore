@@ -194,5 +194,6 @@ demo.py
 # Ignore arrow cache files
 cache-*.arrow
 
-# Ignore my personal benchmarking shell scripts
+# Ignore my personal benchmarking shell scripts, but allow the ones in benchmark/scripts
 benchmark_*.sh
+!benchmark/scripts/*.sh

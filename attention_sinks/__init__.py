@@ -18,4 +18,10 @@ from .models import (
     LlamaForCausalLM,
     LlamaForSequenceClassification,
     LlamaModel,
+    MptForCausalLM,
+    MptForQuestionAnswering,
+    MptForSequenceClassification,
+    MptForTokenClassification,
+    MptModel,
+    MptPreTrainedModel,
 )
