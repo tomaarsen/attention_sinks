@@ -99,7 +99,7 @@ def main():
     # Model args
     parser.add_argument("--model_name_or_path", type=str, default="meta-llama/Llama-2-7b-hf")
     parser.add_argument("--revision", type=str, default="main")
-    parser.add_argument("--trust_remote_code", action="store_false")
+    parser.add_argument("--trust_remote_code", action="store_true")
 
     # Dataset args
     parser.add_argument("--dataset_name", type=str, default="emozilla/pg19-test")
@@ -140,7 +140,7 @@ def main():
     model = AutoModelForCausalLM.from_pretrained(
         args.model_name_or_path,
         revision=args.revision,
-        trust_remote_code=args.trust_remote_code,
+        trust_remote_code=bool(args.trust_remote_code),
         torch_dtype=torch.float16,
         device_map="auto",
         **kwargs,
