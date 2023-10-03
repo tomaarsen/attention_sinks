@@ -1,1 +1,7 @@
-from .modeling_auto import AutoModel, AutoModelForCausalLM
+from .modeling_auto import (
+    AutoModel,
+    AutoModelForCausalLM,
+    AutoModelForQuestionAnswering,
+    AutoModelForSequenceClassification,
+    AutoModelForTokenClassification,
+)

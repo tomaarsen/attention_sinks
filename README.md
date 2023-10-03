@@ -12,7 +12,7 @@
 
   model = AutoModel.from_pretrained("meta-llama/Llama-2-7b-hf", device_map="auto")
   ```
-  Currently, only Llama-based models are supported. Support for other models will come soon.
+* Support for Llama and Falcon models.
 * New parameters to `AutoModel....from_pretrained`:
   * `attention_sink_size`, int, defaults to 4: The number of initial tokens to use as the attention sink. These tokens are always included in the Attention Sink KV Cache.
   * `attention_sink_window_size`, int, defaults to 1020: The size of the sliding window, i.e. the number of "recent tokens" to include in the Attention Sink KV Cache.
