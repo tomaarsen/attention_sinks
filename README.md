@@ -11,9 +11,12 @@
 
 ## Overview
 
+This repository is an open-source implementation of the [Efficient Streaming Language Models with Attention Sinks](https://arxiv.org/abs/2309.17453) paper.
+
 * Extend existing LLMs (e.g. Llama 2) to infinite length without sacrificing efficiency and performance, without any retraining.
   * Model perplexities were stable even after 4 million tokens!
-  * Unlike with regular `transformers`, there is no linear memory increase and no extremely slow inference due to memory issues at higher sequence lengths.
+  * Unlike with regular `transformers`, memory usage is constant and thus the inference does not get extremely slow due to memory issues at higher sequence lengths.
+  * Models using attention sinks have been shown to perform very well at the task of recalling a value from 20 lines back, even if the model has already processed hundreds of thousands of lines, whereas models using regular dense or window attention fall to 0% after having processed a few thousand tokens.
 * The `attention_sinks` API allows for a drop-in replacement of the `transformers` API:
   ```python
   from attention_sinks import AutoModel
@@ -22,14 +25,76 @@
   ```
 * Support for Llama, Falcon, MPT, GPTNeoX (Pythia) and Mistral models.
 * New parameters to `AutoModel....from_pretrained`:
-  * `attention_sink_size`, int, defaults to 4: The number of initial tokens to use as the attention sink. These tokens are always included in the Attention Sink KV Cache.
-  * `attention_sink_window_size`, int, defaults to 1020: The size of the sliding window, i.e. the number of "recent tokens" to include in the Attention Sink KV Cache.
+  * `attention_sink_size`, `int`, defaults to 4: The number of initial tokens to use as the attention sink. These tokens are always included in the Attention Sink KV Cache.
+  * `attention_sink_window_size`, `int`, defaults to 1020: The size of the sliding window, i.e. the number of "recent tokens" to include in the Attention Sink KV Cache. A larger window size costs more memory.
 
 ## Installation
 You can install `attention_sinks` like so
 ```python
 pip install attention_sinks
 ```
+
+### Usage
+Loading any Llama, Falcon, MPT, GPTNeoX (Pythia) or Mistral model is as simple as loading it in `transformers`, the only change is that the model class must be imported from `attention_sinks` rather than `transformers`, e.g.:
+```python
+from attention_sinks import AutoModel
+
+model = AutoModel.from_pretrained("mosaicml/mpt-7b", device_map="auto")
+```
+
+Generation can be done like you would expect from `transformers`, e.g. like so:
+```python
+import torch
+from transformers import AutoTokenizer, TextStreamer, GenerationConfig
+from attention_sinks import AutoModelForCausalLM
+
+
+# model_id = "meta-llama/Llama-2-7b-hf"
+# model_id = "mistralai/Mistral-7B-v0.1"
+model_id = "mosaicml/mpt-7b"
+# model_id = "tiiuae/falcon-7b"
+# model_id = "EleutherAI/pythia-6.9b-deduped"
+# Note: instruct or chat models also work.
+
+# Load the chosen model and corresponding tokenizer
+model = AutoModelForCausalLM.from_pretrained(
+    model_id,
+    # for efficiency:
+    device_map="auto",
+    torch_dtype=torch.float16,
+    # `attention_sinks`-specific arguments:
+    attention_sink_size=4,
+    attention_sink_window_size=252, # <- Low for the sake of faster generation
+)
+tokenizer = AutoTokenizer.from_pretrained(model_id)
+tokenizer.pad_token_id = tokenizer.eos_token_id
+
+# Our input text
+text = "Vaswani et al. (2017) introduced the Transformers"
+
+# Encode the text
+input_ids = tokenizer.encode(text, return_tensors="pt").to(model.device)
+
+# Print tokens as they're being generated
+streamer = TextStreamer(tokenizer)
+generated_tokens = model.generate(
+    input_ids,
+    generation_config=GenerationConfig(
+        # use_cache=True is required, the rest can be changed up.
+        use_cache=True,
+        min_new_tokens=100_000,
+        max_new_tokens=1_000_000,
+        penalty_alpha=0.6,
+        top_k=5,
+        pad_token_id=tokenizer.pad_token_id,
+        eos_token_id=tokenizer.eos_token_id,
+    ),
+    streamer=streamer,
+)
+# Decode the final generated text
+output_text = tokenizer.decode(generated_tokens[0], skip_special_tokens=True)
+```
+This example will happily generate between 100k and 1m tokens without forgetting how to speak, even on a low-VRAM environment like Google Colab when using `load_in_4bit=True` in the `AutoModelForCausalLM.from_pretrained`.
 
 ## Benchmarks
 
