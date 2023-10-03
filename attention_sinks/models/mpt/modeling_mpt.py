@@ -36,9 +36,10 @@ from transformers.utils import (
 )
 
 from attention_sinks.attention_sink_kv_cache import AttentionSinkKVCache
+from attention_sinks.generation.utils import GenerationMixin
 
 
-class MptPreTrainedModel(TMptPreTrainedModel):
+class MptPreTrainedModel(GenerationMixin, TMptPreTrainedModel):
     @classmethod
     def from_pretrained(
         cls,
