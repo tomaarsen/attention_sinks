@@ -22,10 +22,11 @@ from transformers.models.mistral.modeling_mistral import MISTRAL_INPUTS_DOCSTRIN
 from transformers.utils import add_start_docstrings_to_model_forward
 
 from attention_sinks.attention_sink_kv_cache import AttentionSinkKVCache
+from attention_sinks.generation.utils import GenerationMixin
 from attention_sinks.models.mistral.pos_shift import enable_mistral_pos_shift_attention
 
 
-class MistralPreTrainedModel(TMistralPreTrainedModel):
+class MistralPreTrainedModel(GenerationMixin, TMistralPreTrainedModel):
     @classmethod
     def from_pretrained(
         cls,

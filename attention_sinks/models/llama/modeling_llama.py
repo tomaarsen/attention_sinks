@@ -22,10 +22,11 @@ from transformers.models.llama.modeling_llama import LLAMA_INPUTS_DOCSTRING
 from transformers.utils import add_start_docstrings_to_model_forward
 
 from attention_sinks.attention_sink_kv_cache import AttentionSinkKVCache
+from attention_sinks.generation.utils import GenerationMixin
 from attention_sinks.models.llama.pos_shift import enable_llama_pos_shift_attention
 
 
-class LlamaPreTrainedModel(TLlamaPreTrainedModel):
+class LlamaPreTrainedModel(GenerationMixin, TLlamaPreTrainedModel):
     @classmethod
     def from_pretrained(
         cls,

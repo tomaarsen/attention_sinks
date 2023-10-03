@@ -36,12 +36,13 @@ from transformers.utils import (
 )
 
 from attention_sinks.attention_sink_kv_cache import AttentionSinkKVCache
+from attention_sinks.generation.utils import GenerationMixin
 from attention_sinks.models.gpt_neox.pos_shift import (
     enable_gpt_neox_pos_shift_attention,
 )
 
 
-class GPTNeoXPreTrainedModel(TGPTNeoXPreTrainedModel):
+class GPTNeoXPreTrainedModel(GenerationMixin, TGPTNeoXPreTrainedModel):
     @classmethod
     def from_pretrained(
         cls,
