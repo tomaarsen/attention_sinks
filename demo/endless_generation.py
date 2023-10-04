@@ -1,15 +1,12 @@
 import argparse
 from pathlib import Path
-from typing import Any, Dict, List
 
 import torch
-from datasets import Dataset, load_dataset
 from transformers import (
     AutoTokenizer,
     GenerationConfig,
     PreTrainedModel,
     PreTrainedTokenizer,
-    TextStreamer,
 )
 from utils import FileStreamer
 
