@@ -1,5 +1,7 @@
 
-# Attention Sinks in Transformers for Infinite-length LLMs
+# Attention Sinks in Transformers for endless fluent generation
+
+**TL;DR**: `attention_sinks` adapts pre-trained LLMs to use a modified form of sliding window attention that remains able to produce fluent text indefinitely.
 
 | Llama 2 7B | Falcon 7B |
 |:-------------:|:-------------:|
@@ -13,7 +15,7 @@
 
 This repository is an open-source implementation of the [Efficient Streaming Language Models with Attention Sinks](https://arxiv.org/abs/2309.17453) paper.
 
-* Extend existing LLMs (e.g. Llama 2) to infinite length without sacrificing efficiency and performance, without any retraining.
+* Extend existing LLMs (e.g. Llama 2) to produce fluent text indefinitely without sacrificing efficiency and performance, without any retraining. Ideal for multi-step LLMs, e.g. chat assistants.
   * Model perplexities were stable even after 4 million tokens!
   * Unlike with regular `transformers`, memory usage is constant and thus the inference does not get extremely slow due to memory issues at higher sequence lengths.
   * Models using attention sinks have been shown to perform very well at the task of recalling a value from 20 lines back, even if the model has already processed hundreds of thousands of lines, whereas models using regular dense or window attention fall to 0% after having processed a few thousand tokens.
@@ -27,6 +29,8 @@ This repository is an open-source implementation of the [Efficient Streaming Lan
 * New parameters to `AutoModel....from_pretrained`:
   * `attention_sink_size`, `int`, defaults to 4: The number of initial tokens to use as the attention sink. These tokens are always included in the Attention Sink KV Cache.
   * `attention_sink_window_size`, `int`, defaults to 1020: The size of the sliding window, i.e. the number of "recent tokens" to include in the Attention Sink KV Cache. A larger window size costs more memory.
+
+See also the [FAQ](#faq) for further details.
 
 ## Installation
 You can install `attention_sinks` like so
@@ -178,6 +182,30 @@ I've uploaded outputs of various benchmarks in [benchmark](benchmark) so you can
 
 I'm still working on benchmarking non-perplexity metrics, e.g. by continuously asking an instruct-tuned model with Attention Sinks a LLM-benchmark question (e.g. MMLU) and verifying whether it can still answer well after thousands of these questions have been provided in succession.
 
+## FAQ
+This FAQ was created by the [paper](https://arxiv.org/abs/2309.17453) authors:
+
+1. **What does "working on infinite-length inputs" imply for LLMs?**
+
+    Handling infinite-length text with LLMs presents challenges. Notably, storing all previous Key and Value (KV) states demands significant memory, and models might struggle to generate text beyond their training sequence length. Attention Sink models addresses this by retaining only the most recent tokens and attention sinks, discarding intermediate tokens. This enables the model to generate coherent text from recent tokens without a cache reset — a capability not seen in earlier methods.
+
+2. **Is the context window of LLMs expanded?**
+
+    No. The context window remains unchanged. Only the most recent tokens and attention sinks are retained, discarding middle tokens. This means the model can only process the latest tokens. The context window remains constrained by its initial pre-training. For instance, if Llama-2 is pre-trained with a context window of 4096 tokens, then the maximum cache size for an Attention Sink model on Llama-2 remains 4096.
+
+3. **Can I input an extensive text, like a book, into an Attention Sink model for summarization?**
+
+    While you can input a lengthy text, the model will only recognize the latest tokens. Thus, if a book is an input, an Attention Sink model might only summarize the concluding paragraphs, which might not be very insightful. As emphasized earlier, we neither expand the LLMs' context window nor enhance their long-term memory. An Attention Sink model's strength lies in generating fluent text from recent tokens without needing a cache refresh.
+
+4. **What is the ideal use case for Attention Sink models?**
+
+    Attention Sink models are optimized for streaming applications, such as multi-round dialogues. It's ideal for scenarios where a model needs to operate continually without requiring extensive memory or dependency on past data. An example is a daily assistant based on LLMs. Attention Sink models would let the model function continuously, basing its responses on recent conversations without needing to refresh its cache. Earlier methods would either need a cache reset when the conversation length exceeded the training length (losing recent context) or recompute KV states from recent text history, which can be time-consuming.
+
+5. **How does the Attention Sink approach relate to recent works on context extension?**
+
+    The Attention Sink method is orthogonal to recent context extension methods and can be integrated with them. In the context of Attention Sink models, "context extension" refers to the possibility of using a larger cache size to store more recent tokens. For a practical demonstration, refer to Figure 9 in the [paper](https://arxiv.org/abs/2309.17453), where LongChat-7B-v1.5-32K and Llama-2-7B-32K-Instruct are adapted with Attention Sinks.
+
+
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md) for all release information.
@@ -188,7 +216,7 @@ Inspired by, and adapted from [StreamingLLM](https://github.com/mit-han-lab/stre
 
 ### Citation
 
-```
+```bibtex
 @article{xiao2023streamingllm,
     title={Efficient Streaming Language Models with Attention Sinks},
     author={Xiao, Guangxuan and Tian, Yuandong and Chen, Beidi and Han, Song and Lewis, Mike},
