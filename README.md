@@ -100,6 +100,8 @@ output_text = tokenizer.decode(generated_tokens[0], skip_special_tokens=True)
 ```
 This example will happily generate between 100k and 1m tokens without forgetting how to speak, even on a low-VRAM environment like Google Colab when using `load_in_4bit=True` in the `AutoModelForCausalLM.from_pretrained`.
 
+However, if you want to do multi-step generation, which is what `attention_sinks` models are well suited for, then you'll want to try the [demo/streaming.py](demo/streaming.py) demo. This approach is required as the regular `model.generate` does not return the required `past_key_values` parameter to be passed as history in the next prompt.
+
 ## Benchmarks
 
 ### Pre-prepared benchmarks
