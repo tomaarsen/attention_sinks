@@ -70,6 +70,7 @@ model = AutoModelForCausalLM.from_pretrained(
     attention_sink_size=4,
     attention_sink_window_size=252, # <- Low for the sake of faster generation
 )
+model.eval()
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 tokenizer.pad_token_id = tokenizer.eos_token_id
 
@@ -79,26 +80,29 @@ text = "Vaswani et al. (2017) introduced the Transformers"
 # Encode the text
 input_ids = tokenizer.encode(text, return_tensors="pt").to(model.device)
 
-# Print tokens as they're being generated
-streamer = TextStreamer(tokenizer)
-generated_tokens = model.generate(
-    input_ids,
-    generation_config=GenerationConfig(
-        # use_cache=True is required, the rest can be changed up.
-        use_cache=True,
-        min_new_tokens=100_000,
-        max_new_tokens=1_000_000,
-        penalty_alpha=0.6,
-        top_k=5,
-        pad_token_id=tokenizer.pad_token_id,
-        eos_token_id=tokenizer.eos_token_id,
-    ),
-    streamer=streamer,
-)
-# Decode the final generated text
-output_text = tokenizer.decode(generated_tokens[0], skip_special_tokens=True)
+with torch.no_grad():
+    # Print tokens as they're being generated
+    streamer = TextStreamer(tokenizer)
+    generated_tokens = model.generate(
+        input_ids,
+        generation_config=GenerationConfig(
+            # use_cache=True is required, the rest can be changed up.
+            use_cache=True,
+            min_new_tokens=100_000,
+            max_new_tokens=1_000_000,
+            penalty_alpha=0.6,
+            top_k=5,
+            pad_token_id=tokenizer.pad_token_id,
+            eos_token_id=tokenizer.eos_token_id,
+        ),
+        streamer=streamer,
+    )
+    # Decode the final generated text
+    output_text = tokenizer.decode(generated_tokens[0], skip_special_tokens=True)
 ```
 This example will happily generate between 100k and 1m tokens without forgetting how to speak, even on a low-VRAM environment like Google Colab when using `load_in_4bit=True` in the `AutoModelForCausalLM.from_pretrained`.
+
+You can find a demo script for this endless generation in [demo/endless_generation.py]. I already ran this script a few times, resulting in logs for 2000 tokens using [`attention_sinks`](demo/endless_logs/attention_sinks/meta-llama/Llama-2-7b-hf.txt), [`transformers`](demo/endless_logs/transformers/meta-llama/Llama-2-7b-hf.txt) and [`windowed` (attention)](demo/endless_logs/windowed/meta-llama/Llama-2-7b-hf.txt) with Llama 2 7B. The generation settings aren't ideal, but the logs clearly show that Llama 2 7B with `attention_sinks` is the only approach that remains able to generate fluent text.
 
 However, if you want to do multi-step generation, which is what `attention_sinks` models are well suited for, then you'll want to try the [demo/streaming.py](demo/streaming.py) demo. This approach is required as the regular `model.generate` does not return the required `past_key_values` parameter to be passed as history in the next prompt.
 

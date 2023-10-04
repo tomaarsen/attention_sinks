@@ -6,41 +6,41 @@ import torch
 from datasets import Dataset, load_dataset
 from transformers import (
     AutoTokenizer,
+    GenerationConfig,
     PreTrainedModel,
     PreTrainedTokenizer,
+    TextStreamer,
 )
 from utils import FileStreamer
 
 
-def create_prompts(samples: Dict[str, List[Any]]) -> Dict[str, Any]:
-    return {"prompt": [prompt for prompts in samples["prompt"] for prompt in prompts]}
-
-
 @torch.no_grad()
-def greedy_generate(
-    model: PreTrainedModel, tokenizer: PreTrainedTokenizer, dataset: Dataset, log_file: str, max_new_tokens: int = 1000
-):
+def endless_generate(
+    model: PreTrainedModel,
+    tokenizer: PreTrainedTokenizer,
+    text: str,
+    log_file: str,
+    min_new_tokens: int = 1000,
+    max_new_tokens: int = 10000,
+) -> str:
     streamer = FileStreamer(tokenizer, log_file)
-    past_key_values = None
-    new_line_tokens = tokenizer("\n\n", return_tensors="pt", add_special_tokens=False).input_ids
-
-    for prompt in dataset["prompt"]:
-        prompt = f"[INST] {prompt} [/INST]"
-        input_ids = tokenizer(prompt, return_tensors="pt").input_ids
-        input_ids = input_ids.to(model.device)
-
-        streamer.put(input_ids)
-        for _ in range(max_new_tokens):
-            outputs = model(input_ids, past_key_values=past_key_values, use_cache=True)
-            past_key_values = outputs.past_key_values
-            pred_token_idx = outputs.logits[:, -1, :].argmax(dim=-1).unsqueeze(1)
-            streamer.put(pred_token_idx)
-            input_ids = pred_token_idx
-
-            if pred_token_idx == tokenizer.eos_token_id:
-                break
-
-        streamer.put(new_line_tokens)
+    input_ids = tokenizer.encode(text, return_tensors="pt").to(model.device)
+    generated_tokens = model.generate(
+        input_ids,
+        generation_config=GenerationConfig(
+            # use_cache=True is required, the rest can be changed up.
+            use_cache=True,
+            min_new_tokens=min_new_tokens,
+            max_new_tokens=max_new_tokens,
+            penalty_alpha=0.6,
+            top_k=4,
+            pad_token_id=tokenizer.pad_token_id,
+            eos_token_id=tokenizer.eos_token_id,
+        ),
+        streamer=streamer,
+    )
+    # Decode the final generated text
+    return tokenizer.decode(generated_tokens[0], skip_special_tokens=True)
 
 
 def main():
@@ -52,18 +52,22 @@ def main():
     )
 
     # Model args
-    parser.add_argument("--model_name_or_path", type=str, default="mistralai/Mistral-7B-Instruct-v0.1")
+    parser.add_argument("--model_name_or_path", type=str, default="meta-llama/Llama-2-7b-hf")
     parser.add_argument("--revision", type=str, default="main")
     parser.add_argument("--trust_remote_code", action="store_true")
 
-    # Dataset args, not recommended to change:
-    parser.add_argument("--dataset_name", type=str, default="HuggingFaceH4/mt_bench_prompts")
+    # Input text
+    parser.add_argument("--text", type=str, default="Vaswani et al. (2017) introduced the Transformers")
+
+    # Generation args
+    parser.add_argument("--min_new_tokens", type=int, default=1000)
+    parser.add_argument("--max_new_tokens", type=int, default=10000)
 
     # Where to log
     parser.add_argument("--log_file", type=str, default=None)
 
     # Window size for windowed and attention_sinks
-    parser.add_argument("--window_size", type=int, default=1024)
+    parser.add_argument("--window_size", type=int, default=512)
 
     # Attention Sinks-only settings
     # Attention Sink window size is calculated with args.window_size - args.attention_sink_size
@@ -99,12 +103,15 @@ def main():
     tokenizer = AutoTokenizer.from_pretrained(args.model_name_or_path, trust_remote_code=bool(args.trust_remote_code))
     tokenizer.pad_token_id = tokenizer.eos_token_id
 
-    # Set up the dataset
-    dataset = load_dataset(args.dataset_name, split="train")
-    dataset = dataset.map(create_prompts, batched=True, remove_columns=dataset.column_names)
-
-    log_file = args.log_file or Path("demo") / "streaming_logs" / args.experiment / f"{args.model_name_or_path}.txt"
-    greedy_generate(model, tokenizer, dataset, log_file=log_file)
+    log_file = args.log_file or Path("demo") / "endless_logs" / args.experiment / f"{args.model_name_or_path}.txt"
+    endless_generate(
+        model,
+        tokenizer,
+        args.text,
+        log_file=log_file,
+        min_new_tokens=args.min_new_tokens,
+        max_new_tokens=args.max_new_tokens,
+    )
 
 
 if __name__ == "__main__":

@@ -199,4 +199,4 @@ benchmark_*.sh
 !benchmark/scripts/*.sh
 
 # Ignore demo logs
-demo/logs
+demo/streaming_logs
