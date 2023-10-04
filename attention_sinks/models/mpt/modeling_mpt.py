@@ -1,29 +1,14 @@
 import os
 import types
-from typing import List, Optional, Tuple, Union
+from typing import Optional, Tuple, Union
 
-import torch
-from transformers import (
-    MptForCausalLM as TMptForCausalLM,
-)
-from transformers import (
-    MptForQuestionAnswering as TMptForQuestionAnswering,
-)
-from transformers import (
-    MptForSequenceClassification as TMptForSequenceClassification,
-)
-from transformers import (
-    MptForTokenClassification as TMptForTokenClassification,
-)
-from transformers import (
-    MptModel as TMptModel,
-)
-from transformers import (
-    MptPreTrainedModel as TMptPreTrainedModel,
-)
-from transformers import (
-    PretrainedConfig,
-)
+from transformers import MptForCausalLM as TMptForCausalLM
+from transformers import MptForQuestionAnswering as TMptForQuestionAnswering
+from transformers import MptForSequenceClassification as TMptForSequenceClassification
+from transformers import MptForTokenClassification as TMptForTokenClassification
+from transformers import MptModel as TMptModel
+from transformers import MptPreTrainedModel as TMptPreTrainedModel
+from transformers import PretrainedConfig
 from transformers.modeling_outputs import BaseModelOutputWithPastAndCrossAttentions
 from transformers.models.mpt.modeling_mpt import (
     _CHECKPOINT_FOR_DOC,

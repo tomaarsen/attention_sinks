@@ -1,38 +1,17 @@
 import os
 import types
-from typing import List, Optional, Tuple, Union
+from typing import Optional, Tuple, Union
 
-from transformers import (
-    FalconForCausalLM as TFalconForCausalLM,
-)
-from transformers import (
-    FalconForQuestionAnswering as TFalconForQuestionAnswering,
-)
-from transformers import (
-    FalconForSequenceClassification as TFalconForSequenceClassification,
-)
-from transformers import (
-    FalconForTokenClassification as TFalconForTokenClassification,
-)
-from transformers import (
-    FalconModel as TFalconModel,
-)
-from transformers import (
-    FalconPreTrainedModel as TFalconPreTrainedModel,
-)
-from transformers import (
-    PretrainedConfig,
-)
+from transformers import FalconForCausalLM as TFalconForCausalLM
+from transformers import FalconForQuestionAnswering as TFalconForQuestionAnswering
+from transformers import FalconForSequenceClassification as TFalconForSequenceClassification
+from transformers import FalconForTokenClassification as TFalconForTokenClassification
+from transformers import FalconModel as TFalconModel
+from transformers import FalconPreTrainedModel as TFalconPreTrainedModel
+from transformers import PretrainedConfig
 from transformers.modeling_outputs import BaseModelOutputWithPastAndCrossAttentions
-from transformers.models.falcon.modeling_falcon import (
-    _CHECKPOINT_FOR_DOC,
-    _CONFIG_FOR_DOC,
-    FALCON_INPUTS_DOCSTRING,
-)
-from transformers.utils import (
-    add_code_sample_docstrings,
-    add_start_docstrings_to_model_forward,
-)
+from transformers.models.falcon.modeling_falcon import _CHECKPOINT_FOR_DOC, _CONFIG_FOR_DOC, FALCON_INPUTS_DOCSTRING
+from transformers.utils import add_code_sample_docstrings, add_start_docstrings_to_model_forward
 
 from attention_sinks.attention_sink_kv_cache import AttentionSinkKVCache
 from attention_sinks.generation.utils import GenerationMixin

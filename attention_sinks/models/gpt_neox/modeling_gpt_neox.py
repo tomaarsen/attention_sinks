@@ -1,28 +1,14 @@
 import os
 import types
-from typing import List, Optional, Tuple, Union
+from typing import Optional, Tuple, Union
 
-from transformers import (
-    GPTNeoXForCausalLM as TGPTNeoXForCausalLM,
-)
-from transformers import (
-    GPTNeoXForQuestionAnswering as TGPTNeoXForQuestionAnswering,
-)
-from transformers import (
-    GPTNeoXForSequenceClassification as TGPTNeoXForSequenceClassification,
-)
-from transformers import (
-    GPTNeoXForTokenClassification as TGPTNeoXForTokenClassification,
-)
-from transformers import (
-    GPTNeoXModel as TGPTNeoXModel,
-)
-from transformers import (
-    GPTNeoXPreTrainedModel as TGPTNeoXPreTrainedModel,
-)
-from transformers import (
-    PretrainedConfig,
-)
+from transformers import GPTNeoXForCausalLM as TGPTNeoXForCausalLM
+from transformers import GPTNeoXForQuestionAnswering as TGPTNeoXForQuestionAnswering
+from transformers import GPTNeoXForSequenceClassification as TGPTNeoXForSequenceClassification
+from transformers import GPTNeoXForTokenClassification as TGPTNeoXForTokenClassification
+from transformers import GPTNeoXModel as TGPTNeoXModel
+from transformers import GPTNeoXPreTrainedModel as TGPTNeoXPreTrainedModel
+from transformers import PretrainedConfig
 from transformers.modeling_outputs import BaseModelOutputWithPast
 from transformers.models.gpt_neox.modeling_gpt_neox import (
     _CHECKPOINT_FOR_DOC,
@@ -30,16 +16,11 @@ from transformers.models.gpt_neox.modeling_gpt_neox import (
     _REAL_CHECKPOINT_FOR_DOC,
     GPT_NEOX_INPUTS_DOCSTRING,
 )
-from transformers.utils import (
-    add_code_sample_docstrings,
-    add_start_docstrings_to_model_forward,
-)
+from transformers.utils import add_code_sample_docstrings, add_start_docstrings_to_model_forward
 
 from attention_sinks.attention_sink_kv_cache import AttentionSinkKVCache
 from attention_sinks.generation.utils import GenerationMixin
-from attention_sinks.models.gpt_neox.pos_shift import (
-    enable_gpt_neox_pos_shift_attention,
-)
+from attention_sinks.models.gpt_neox.pos_shift import enable_gpt_neox_pos_shift_attention
 
 
 class GPTNeoXPreTrainedModel(GenerationMixin, TGPTNeoXPreTrainedModel):

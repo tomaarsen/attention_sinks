@@ -5,11 +5,7 @@ from typing import Optional, Tuple
 import torch
 import torch.utils.checkpoint
 from torch import nn
-from transformers.models.mistral.modeling_mistral import (
-    MistralAttention,
-    repeat_kv,
-    rotate_half,
-)
+from transformers.models.mistral.modeling_mistral import MistralAttention, repeat_kv, rotate_half
 
 __all__ = ["enable_mistral_pos_shift_attention"]
 

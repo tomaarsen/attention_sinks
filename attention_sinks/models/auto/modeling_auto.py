@@ -1,25 +1,9 @@
-from transformers import (
-    AutoModel as TAutoModel,
-)
-from transformers import (
-    AutoModelForCausalLM as TAutoModelForCausalLM,
-)
-from transformers import (
-    AutoModelForQuestionAnswering as TAutoModelForQuestionAnswering,
-)
-from transformers import (
-    AutoModelForSequenceClassification as TAutoModelForSequenceClassification,
-)
-from transformers import (
-    AutoModelForTokenClassification as TAutoModelForTokenClassification,
-)
-from transformers import (
-    FalconConfig,
-    GPTNeoXConfig,
-    LlamaConfig,
-    MistralConfig,
-    MptConfig,
-)
+from transformers import AutoModel as TAutoModel
+from transformers import AutoModelForCausalLM as TAutoModelForCausalLM
+from transformers import AutoModelForQuestionAnswering as TAutoModelForQuestionAnswering
+from transformers import AutoModelForSequenceClassification as TAutoModelForSequenceClassification
+from transformers import AutoModelForTokenClassification as TAutoModelForTokenClassification
+from transformers import FalconConfig, GPTNeoXConfig, LlamaConfig, MistralConfig, MptConfig
 from transformers.models.auto.modeling_auto import (
     MODEL_FOR_CAUSAL_LM_MAPPING,
     MODEL_FOR_QUESTION_ANSWERING_MAPPING,

@@ -1,22 +1,12 @@
 import os
 import types
-from typing import List, Optional, Tuple, Union
+from typing import Optional, Tuple, Union
 
-from transformers import (
-    LlamaForCausalLM as TLlamaForCausalLM,
-)
-from transformers import (
-    LlamaForSequenceClassification as TLlamaForSequenceClassification,
-)
-from transformers import (
-    LlamaModel as TLlamaModel,
-)
-from transformers import (
-    LlamaPreTrainedModel as TLlamaPreTrainedModel,
-)
-from transformers import (
-    PretrainedConfig,
-)
+from transformers import LlamaForCausalLM as TLlamaForCausalLM
+from transformers import LlamaForSequenceClassification as TLlamaForSequenceClassification
+from transformers import LlamaModel as TLlamaModel
+from transformers import LlamaPreTrainedModel as TLlamaPreTrainedModel
+from transformers import PretrainedConfig
 from transformers.modeling_outputs import BaseModelOutputWithPast
 from transformers.models.llama.modeling_llama import LLAMA_INPUTS_DOCSTRING
 from transformers.utils import add_start_docstrings_to_model_forward

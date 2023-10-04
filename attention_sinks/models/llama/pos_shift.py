@@ -11,11 +11,7 @@ import torch
 import torch.nn.functional as F
 import torch.utils.checkpoint
 from torch import nn
-from transformers.models.llama.modeling_llama import (
-    LlamaAttention,
-    repeat_kv,
-    rotate_half,
-)
+from transformers.models.llama.modeling_llama import LlamaAttention, repeat_kv, rotate_half
 
 __all__ = ["enable_llama_pos_shift_attention"]
 

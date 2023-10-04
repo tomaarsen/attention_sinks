@@ -73,6 +73,8 @@ exclude_lines = [
 profile = "black"
 
 [tool.ruff]
+line-length = 120
+
 # Ignore line length violations
 ignore = ["E501"]
 

@@ -1,22 +1,12 @@
 import os
 import types
-from typing import List, Optional, Tuple, Union
+from typing import Optional, Tuple, Union
 
-from transformers import (
-    MistralForCausalLM as TMistralForCausalLM,
-)
-from transformers import (
-    MistralForSequenceClassification as TMistralForSequenceClassification,
-)
-from transformers import (
-    MistralModel as TMistralModel,
-)
-from transformers import (
-    MistralPreTrainedModel as TMistralPreTrainedModel,
-)
-from transformers import (
-    PretrainedConfig,
-)
+from transformers import MistralForCausalLM as TMistralForCausalLM
+from transformers import MistralForSequenceClassification as TMistralForSequenceClassification
+from transformers import MistralModel as TMistralModel
+from transformers import MistralPreTrainedModel as TMistralPreTrainedModel
+from transformers import PretrainedConfig
 from transformers.modeling_outputs import BaseModelOutputWithPast
 from transformers.models.mistral.modeling_mistral import MISTRAL_INPUTS_DOCSTRING
 from transformers.utils import add_start_docstrings_to_model_forward
