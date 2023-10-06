@@ -24,8 +24,12 @@ def greedy_generate(
     past_key_values = None
     new_line_tokens = tokenizer("\n\n", return_tensors="pt", add_special_tokens=False).input_ids
 
-    for prompt in dataset["prompt"]:
-        prompt = f"[INST] {prompt} [/INST]"
+    for prompt_index, prompt in enumerate(dataset["prompt"]):
+        # Use the chat template initially, as it adds the system prompt if the model has one, and then use [INST] and [/INST]
+        if prompt_index:
+            prompt = f"[INST] {prompt} [/INST]"
+        else:
+            prompt = tokenizer.apply_chat_template([{"role": "user", "content": prompt}], tokenize=False)
         input_ids = tokenizer(prompt, return_tensors="pt").input_ids
         input_ids = input_ids.to(model.device)
 
