@@ -34,7 +34,7 @@ In this benchmark, I sent subsequent prompts from [MT-Bench](https://huggingface
 
 | Mistral-7B-Instruct-v0.1 | Llama-2-7b-chat-hf |
 |:----------:|:----------:|
-| ![streaming_fluency_loss_mistral_7b_full](https://github.com/tomaarsen/attention_sinks/assets/37621491/03b3d68b-c315-4ea3-838b-311f3f21402d) | !![streaming_fluency_loss_llama_7b_full](https://github.com/tomaarsen/attention_sinks/assets/37621491/d1a083c4-b2b1-47ad-a181-05f9c802a2f1) |
+| ![streaming_fluency_loss_mistral_7b_full](https://github.com/tomaarsen/attention_sinks/assets/37621491/03b3d68b-c315-4ea3-838b-311f3f21402d) | ![streaming_fluency_loss_llama_7b_full](https://github.com/tomaarsen/attention_sinks/assets/37621491/d1a083c4-b2b1-47ad-a181-05f9c802a2f1) |
 
 Loading models using `attention_sinks` has a very positive impact on the fluency of the models across subsequent prompts. However, as can be seen for Llama-2-7B-chat-hf, it does not completely avoid fluency issues.
 
