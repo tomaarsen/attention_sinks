@@ -5,6 +5,8 @@
 
 ## Benchmark Findings
 
+See [Benchmark Setups](#benchmark-setups) for information on how these benchmarks were carried out.
+
 ### Perplexity
 The following figures plot model perplexities under the various different approaches. A higher perplexity is indicative that the model is losing the ability to produce proper language.
 
@@ -34,7 +36,7 @@ In this benchmark, I sent subsequent prompts from [MT-Bench](https://huggingface
 |:----------:|:----------:|
 | ![streaming_fluency_loss_mistral_7b](https://github.com/tomaarsen/attention_sinks/assets/37621491/53cd7aeb-2507-4b90-9942-cc549e53f84a) | ![streaming_fluency_loss_llama_2_7b](https://github.com/tomaarsen/attention_sinks/assets/37621491/77e623ad-c895-41c7-9c50-e276b363ba08) |
 
-Loading models using `attention_sinks` has a very positive impact on the fluency of the models across subsequent prompts.
+Loading models using `attention_sinks` has a very positive impact on the fluency of the models across subsequent prompts. However, as can be seen for Llama-2-7B-chat-hf, it does not completely avoid fluency issues.
 
 ## Overview
 
@@ -133,7 +135,7 @@ You can find a demo script for this endless generation in [demo/endless_generati
 
 However, if you want to do multi-step generation, which is what `attention_sinks` models are well suited for, then you'll want to try the [demo/streaming.py](demo/streaming.py) demo. This approach is required as the regular `model.generate` does not return the required `past_key_values` parameter to be passed as history in the next prompt.
 
-## Benchmark setups
+## Benchmark Setups
 
 ### Perplexity
 
