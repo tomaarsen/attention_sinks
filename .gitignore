@@ -200,3 +200,4 @@ benchmark_*.sh
 
 # Ignore demo logs
 demo/streaming_logs
+demo/scripts
