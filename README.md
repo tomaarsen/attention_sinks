@@ -226,7 +226,7 @@ I've measured the fluency during endless generation by running [`demo/endless_ge
 I stopped the generations after I observed loss of fluency.
 
 ### Fluency across subsequent prompts for chat-style LLMs
-I've measured the fluency across subsequent prompts by running [`demo/streaming.py`](demo/streaming.py) using `attention_sinks` and `windowed` modes, and parsing the logs. In particular, I automatically classified a response as a failure if it:
+I've measured the fluency across subsequent prompts by running [`demo/streaming.py`](demo/streaming.py) using `attention_sinks`, `transformers` and `windowed` modes, and parsing the logs. In particular, I automatically classified a response as a failure if it:
 * contains less than 26 different characters, and
 * is more than 1000 tokens long.
 
