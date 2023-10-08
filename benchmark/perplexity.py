@@ -36,12 +36,13 @@ def compute_perplexity(
     data_column: str = "text",
     num_samples: int = 1,
     num_tokens: Optional[int] = None,
+    overwrite: bool = False,
 ) -> None:
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     output_file = output_dir / f"{experiment}.csv"
 
-    if output_file.exists():
+    if output_file.exists() and not overwrite:
         raise ValueError(
             f"The {output_file!r} output file already exists - if you really want to override it, then delete it manually first."
         )
@@ -111,6 +112,7 @@ def main():
 
     # Where to log
     parser.add_argument("--output_dir", type=str, default="benchmark/outputs")
+    parser.add_argument("--overwrite", action="store_true")
 
     # Window size for windowed and attention_sinks
     parser.add_argument("--window_size", type=int, default=1024)
@@ -160,6 +162,7 @@ def main():
         data_column=args.data_column,
         num_samples=1,  # <- No support for more than one instance now
         num_tokens=args.num_tokens,
+        overwrite=args.overwrite,
     )
 
 
