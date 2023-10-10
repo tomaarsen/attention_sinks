@@ -39,7 +39,7 @@ In this benchmark, I sent subsequent prompts from [MT-Bench](https://huggingface
 | ![streaming_fluency_loss_mpt_7b_full](https://github.com/huggingface/transformers/assets/37621491/ec4d98a3-df3a-41b0-ab51-f67f57e5ab20) | |
 
 
-Loading models using `attention_sinks` has a very positive impact on the fluency of the models across subsequent prompts. However, as can be seen for Llama-2-7B-chat-hf, it does not completely avoid fluency issues.
+Loading models using `attention_sinks` has a very positive impact on the fluency of the models across subsequent prompts. However, as can be seen for Llama-2-7B-chat-hf, it does not completely avoid fluency issues. See [demo/streaming_logs](demo/streaming_logs/) for the full logs.
 
 ## Overview
 

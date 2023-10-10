@@ -6,6 +6,7 @@ repos:
       - id: end-of-file-fixer
         exclude_types: [text, jupyter]
       - id: trailing-whitespace
+        exclude: ^demo/streaming_logs/
 
   - repo: https://github.com/psf/black
     rev: 23.1.0
