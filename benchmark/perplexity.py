@@ -44,7 +44,7 @@ def compute_perplexity(
 
     if output_file.exists() and not overwrite:
         raise ValueError(
-            f"The {output_file!r} output file already exists - if you really want to override it, then delete it manually first."
+            f"The {output_file!r} output file already exists - if you really want to override it, then use `--overwrite`."
         )
 
     logs = defaultdict(list)
