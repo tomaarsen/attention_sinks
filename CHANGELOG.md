@@ -15,6 +15,12 @@ Types of changes
 * "Security" in case of vulnerabilities.
 -->
 
+## [0.2.3] - 2023-10-10
+
+### Added
+
+- Added support for GPT-J models. ([#13](https://github.com/tomaarsen/attention_sinks/pull/13))
+
 ## [0.2.2] - 2023-10-04
 
 ### Fixed
