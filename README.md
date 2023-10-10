@@ -15,8 +15,8 @@ The following figures plot model perplexities under the various different approa
 | ![llama_2_7b_ppl_vram_plotted](https://github.com/tomaarsen/attention_sinks/assets/37621491/8d2e5b88-7158-41ac-8b3a-5a7abe38020d)  | ![falcon_7b_ppl_vram_plotted](https://github.com/tomaarsen/attention_sinks/assets/37621491/1be07370-6de7-4a7e-b5ab-3092a5ecb412)  |
 | **MPT-7B** | **Pythia-6.9B** |
 | ![mpt_7b_ppl_vram_plotted](https://github.com/mit-han-lab/streaming-llm/assets/37621491/c96cff66-92a3-43ab-bc21-40232f2740a0) | ![pythia_6 8b_ppl_vram_plotted](https://github.com/tomaarsen/attention_sinks/assets/37621491/b0fee168-fa5a-457d-9e27-8395eb6dfb38) |
-| **Mistral-7B-v0.1** | |
-| ![mistral_7b_ppl_vram_plotted](https://github.com/microsoft/torchscale/assets/37621491/3a4c5634-cc1b-42d1-a35a-afb376a4f970) | |
+| **Mistral-7B-v0.1** | **GPT-J-6B** |
+| ![mistral_7b_ppl_vram_plotted](https://github.com/microsoft/torchscale/assets/37621491/3a4c5634-cc1b-42d1-a35a-afb376a4f970) | ![gpt_j_6b_ppl_vram_plotted](https://github.com/tomaarsen/attention_sinks/assets/37621491/bdca944f-2fd2-46c4-8a88-2e1a8f16f75f) |
 
 The results are clear as day:
 1. `transformers`: The VRAM usage is linear as it doesn't do any windowing. The performance heavily falls after ~4096 tokens.
@@ -55,7 +55,7 @@ This repository is an open-source implementation of the [Efficient Streaming Lan
 
   model = AutoModel.from_pretrained("meta-llama/Llama-2-7b-hf", device_map="auto")
   ```
-* Support for Llama, Falcon, MPT, GPTNeoX (Pythia) and Mistral models.
+* Support for Llama, Mistral, Falcon, MPT, GPTNeoX (Pythia) and GPT-J models.
   * Note: All of these models must be loaded **without** `trust_remote_code=True`.
 * New parameters to `AutoModel....from_pretrained`:
   * `attention_sink_size`, `int`, defaults to 4: The number of initial tokens to use as the attention sink. These tokens are always included in the Attention Sink KV Cache.
@@ -70,7 +70,7 @@ pip install attention_sinks
 ```
 
 ### Usage
-Loading any Llama, Falcon, MPT, GPTNeoX (Pythia) or Mistral model is as simple as loading it in `transformers`, the only change is that the model class must be imported from `attention_sinks` rather than `transformers`, e.g.:
+Loading any Llama, Mistral, Falcon, MPT, GPTNeoX (Pythia) and GPT-J model is as simple as loading it in `transformers`, the only change is that the model class must be imported from `attention_sinks` rather than `transformers`, e.g.:
 ```python
 from attention_sinks import AutoModel
 
