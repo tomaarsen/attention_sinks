@@ -21,6 +21,13 @@ from .gpt_neox import (
     GPTNeoXModel,
     GPTNeoXPreTrainedModel,
 )
+from .gptj import (
+    GPTJForCausalLM,
+    GPTJForQuestionAnswering,
+    GPTJForSequenceClassification,
+    GPTJModel,
+    GPTJPreTrainedModel,
+)
 from .llama import LlamaForCausalLM, LlamaForSequenceClassification, LlamaModel
 from .mistral import MistralForCausalLM, MistralForSequenceClassification, MistralModel
 from .mpt import (

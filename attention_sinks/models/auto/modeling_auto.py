@@ -3,7 +3,7 @@ from transformers import AutoModelForCausalLM as TAutoModelForCausalLM
 from transformers import AutoModelForQuestionAnswering as TAutoModelForQuestionAnswering
 from transformers import AutoModelForSequenceClassification as TAutoModelForSequenceClassification
 from transformers import AutoModelForTokenClassification as TAutoModelForTokenClassification
-from transformers import FalconConfig, GPTNeoXConfig, LlamaConfig, MistralConfig, MptConfig
+from transformers import FalconConfig, GPTJConfig, GPTNeoXConfig, LlamaConfig, MistralConfig, MptConfig
 from transformers.models.auto.modeling_auto import (
     MODEL_FOR_CAUSAL_LM_MAPPING,
     MODEL_FOR_QUESTION_ANSWERING_MAPPING,
@@ -26,6 +26,12 @@ from ..gpt_neox import (
     GPTNeoXForTokenClassification,
     GPTNeoXModel,
 )
+from ..gptj import (
+    GPTJForCausalLM,
+    GPTJForQuestionAnswering,
+    GPTJForSequenceClassification,
+    GPTJModel,
+)
 from ..llama import LlamaForCausalLM, LlamaForSequenceClassification, LlamaModel
 from ..mistral import MistralForCausalLM, MistralForSequenceClassification, MistralModel
 from ..mpt import (
@@ -41,6 +47,7 @@ MODEL_MAPPING._extra_content = {
     FalconConfig: FalconModel,
     MptConfig: MptModel,
     GPTNeoXConfig: GPTNeoXModel,
+    GPTJConfig: GPTJModel,
     MistralConfig: MistralModel,
 }
 MODEL_FOR_CAUSAL_LM_MAPPING._extra_content = {
@@ -48,6 +55,7 @@ MODEL_FOR_CAUSAL_LM_MAPPING._extra_content = {
     FalconConfig: FalconForCausalLM,
     MptConfig: MptForCausalLM,
     GPTNeoXConfig: GPTNeoXForCausalLM,
+    GPTJConfig: GPTJForCausalLM,
     MistralConfig: MistralForCausalLM,
 }
 MODEL_FOR_SEQUENCE_CLASSIFICATION_MAPPING._extra_content = {
@@ -55,12 +63,14 @@ MODEL_FOR_SEQUENCE_CLASSIFICATION_MAPPING._extra_content = {
     FalconConfig: FalconForSequenceClassification,
     MptConfig: MptForSequenceClassification,
     GPTNeoXConfig: GPTNeoXForSequenceClassification,
+    GPTJConfig: GPTJForSequenceClassification,
     MistralConfig: MistralForSequenceClassification,
 }
 MODEL_FOR_QUESTION_ANSWERING_MAPPING._extra_content = {
     FalconConfig: FalconForQuestionAnswering,
     MptConfig: MptForQuestionAnswering,
     GPTNeoXConfig: GPTNeoXForQuestionAnswering,
+    GPTJConfig: GPTJForQuestionAnswering,
 }
 MODEL_FOR_TOKEN_CLASSIFICATION_MAPPING._extra_content = {
     FalconConfig: FalconForTokenClassification,
