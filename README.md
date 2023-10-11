@@ -35,13 +35,13 @@ In this benchmark, I sent subsequent prompts from [MT-Bench](https://huggingface
 > [!WARNING]
 > The automatic detection of fluency losses is very naive: it tries to count the number of real words in the response, but that can result in false positives if e.g. the prompt is to generate some German text. See [demo/streaming_logs](demo/streaming_logs/) for the full logs to get a better picture of the real generative performance.
 
-For Llama-2-7b-chat, `transformers` runs out of VRAM, so it can only handle a handful of subsequent prompts. For MPT-7B-chat, a `RuntimeError` is encountered for `transformers` when the input length exceeds 2048. For Zephyr-7B-alpha, generation was halted when it got too slow.
+For Llama-2-7b-chat, `transformers` runs out of VRAM, so it can only handle a handful of subsequent prompts. For MPT-7B-chat, a `RuntimeError` is encountered for `transformers` when the input length exceeds 2048, unless the maximum sequence length is configured to some higher value. In this experiment, I set it to 8192 for MPT-7B-chat specifically. For Zephyr-7B-alpha, generation was halted when it got too slow.
 
 | Mistral-7B-Instruct-v0.1 | Llama-2-7b-chat-hf |
 |:----------:|:----------:|
 | ![streaming_fluency_loss_mistral_7b_updated](https://github.com/tomaarsen/attention_sinks/assets/37621491/987513d9-75d6-41e6-96a5-5d47624faed3) | ![streaming_fluency_loss_llama_2_7b_updated](https://github.com/tomaarsen/attention_sinks/assets/37621491/5fd2e3d9-9fd0-4500-ae29-d3cedb61c102) |
 | **MPT-7B-chat** | **Zephyr-7B-alpha** |
-| ![streaming_fluency_loss_mpt_7b_updated](https://github.com/tomaarsen/attention_sinks/assets/37621491/2b17555f-2329-491d-87a1-1a3635b20f19) | ![streaming_fluency_loss_zephyr_7b_updated](https://github.com/tomaarsen/attention_sinks/assets/37621491/d07962fc-b501-4317-8f1e-421cb9bba775) |
+| ![streaming_fluency_loss_mpt_7b_extended](https://github.com/tomaarsen/attention_sinks/assets/37621491/9e3a479b-dc44-4041-b8f6-01d87aab0556) | ![streaming_fluency_loss_zephyr_7b_updated](https://github.com/tomaarsen/attention_sinks/assets/37621491/d07962fc-b501-4317-8f1e-421cb9bba775) |
 
 Loading models using `attention_sinks` has a very positive impact on the fluency of the models across subsequent prompts. However, as can be seen for Llama-2-7B-chat-hf, it does not completely avoid fluency issues.
 
