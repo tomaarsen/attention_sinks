@@ -38,3 +38,4 @@ from .mpt import (
     MptModel,
     MptPreTrainedModel,
 )
+from .qwen import QWenLMHeadModel

@@ -38,4 +38,5 @@ from .models import (
     MptForTokenClassification,
     MptModel,
     MptPreTrainedModel,
+    QWenLMHeadModel,
 )

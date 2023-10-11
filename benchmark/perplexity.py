@@ -127,7 +127,12 @@ def main():
     if args.experiment == "transformers":
         from transformers import AutoModelForCausalLM
     else:
-        from attention_sinks import AutoModelForCausalLM
+        if "qwen" in args.model_name_or_path.lower():
+            # TODO: Make AutoModelForCausalLM.from_pretrainied work for qwen
+            from attention_sinks.models import QWenLMHeadModel as AutoModelForCausalLM
+        else:
+            from attention_sinks import AutoModelForCausalLM
+
     kwargs = {}
     if args.experiment == "attention_sinks":
         kwargs = {

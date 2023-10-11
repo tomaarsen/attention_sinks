@@ -41,6 +41,7 @@ from ..mpt import (
     MptForTokenClassification,
     MptModel,
 )
+from ..qwen import QWenModel, QWenLMHeadModel, QWenConfig
 
 MODEL_MAPPING._extra_content = {
     LlamaConfig: LlamaModel,
@@ -49,6 +50,7 @@ MODEL_MAPPING._extra_content = {
     GPTNeoXConfig: GPTNeoXModel,
     GPTJConfig: GPTJModel,
     MistralConfig: MistralModel,
+    QWenConfig: QWenModel,
 }
 MODEL_FOR_CAUSAL_LM_MAPPING._extra_content = {
     LlamaConfig: LlamaForCausalLM,
@@ -57,6 +59,7 @@ MODEL_FOR_CAUSAL_LM_MAPPING._extra_content = {
     GPTNeoXConfig: GPTNeoXForCausalLM,
     GPTJConfig: GPTJForCausalLM,
     MistralConfig: MistralForCausalLM,
+    QWenConfig: QWenLMHeadModel,
 }
 MODEL_FOR_SEQUENCE_CLASSIFICATION_MAPPING._extra_content = {
     LlamaConfig: LlamaForSequenceClassification,
