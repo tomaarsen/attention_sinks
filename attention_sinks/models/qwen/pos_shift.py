@@ -1,7 +1,9 @@
-import types
-from typing import Optional, Tuple, List
+from typing import List, Optional, Tuple
 
 import torch
+
+__all__ = ["qwen_pos_shift_attention_forward"]
+
 
 def _rotate_half(x):
     from einops import rearrange
@@ -104,11 +106,3 @@ def qwen_pos_shift_attention_forward(
         outputs += (attn_weight,)
 
     return outputs
-
-
-def enable_qwen_pos_shift_attention(model):
-    for name, module in reversed(model._modules.items()):
-        if len(list(module.children())) > 0:
-            enable_qwen_pos_shift_attention(module)
-        if name.split(".")[-1] == 'attn':
-            model._modules[name].forward = types.MethodType(qwen_pos_shift_attention_forward, model._modules[name])

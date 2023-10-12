@@ -6,3 +6,4 @@ from .modeling_gpt_neox import (
     GPTNeoXModel,
     GPTNeoXPreTrainedModel,
 )
+from .pos_shift import gpt_neox_pos_shift_attention_forward

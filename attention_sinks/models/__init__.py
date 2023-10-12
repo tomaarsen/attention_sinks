@@ -12,6 +12,7 @@ from .falcon import (
     FalconForTokenClassification,
     FalconModel,
     FalconPreTrainedModel,
+    falcon_pos_shift_attention_forward,
 )
 from .gpt_neox import (
     GPTNeoXForCausalLM,
@@ -20,6 +21,7 @@ from .gpt_neox import (
     GPTNeoXForTokenClassification,
     GPTNeoXModel,
     GPTNeoXPreTrainedModel,
+    gpt_neox_pos_shift_attention_forward,
 )
 from .gptj import (
     GPTJForCausalLM,
@@ -27,9 +29,15 @@ from .gptj import (
     GPTJForSequenceClassification,
     GPTJModel,
     GPTJPreTrainedModel,
+    gptj_pos_shift_attention_forward,
 )
-from .llama import LlamaForCausalLM, LlamaForSequenceClassification, LlamaModel
-from .mistral import MistralForCausalLM, MistralForSequenceClassification, MistralModel
+from .llama import LlamaForCausalLM, LlamaForSequenceClassification, LlamaModel, llama_pos_shift_attention_forward
+from .mistral import (
+    MistralForCausalLM,
+    MistralForSequenceClassification,
+    MistralModel,
+    mistral_pos_shift_attention_forward,
+)
 from .mpt import (
     MptForCausalLM,
     MptForQuestionAnswering,
@@ -38,4 +46,4 @@ from .mpt import (
     MptModel,
     MptPreTrainedModel,
 )
-from .qwen import QWenLMHeadModel
+from .qwen import qwen_pos_shift_attention_forward

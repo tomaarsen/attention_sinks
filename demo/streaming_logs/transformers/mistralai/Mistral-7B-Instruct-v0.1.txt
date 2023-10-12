@@ -1,4 +1,4 @@
-<s><s>[INST] Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions. [/INST] Title: A Magical Journey to Hawaii: Discovering the Enchantment of the Islands
+<s> [INST] Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions. [/INST] Title: A Magical Journey to Hawaii: Discovering the Enchantment of the Islands
 
 As I stepped off the plane, a warm breeze caressed my face, carrying with it the sweet scent of tropical flowers and the distant sound of waves crashing against the shore. I had finally arrived in Hawaii, an island paradise that has long been on my bucket list.
 
