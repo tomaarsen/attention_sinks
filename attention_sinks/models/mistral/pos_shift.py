@@ -1,13 +1,12 @@
 import math
-import types
 from typing import Optional, Tuple
 
 import torch
 import torch.utils.checkpoint
 from torch import nn
-from transformers.models.mistral.modeling_mistral import MistralAttention, repeat_kv, rotate_half
+from transformers.models.mistral.modeling_mistral import repeat_kv, rotate_half
 
-__all__ = ["enable_mistral_pos_shift_attention"]
+__all__ = ["mistral_pos_shift_attention_forward"]
 
 
 def apply_rotary_pos_emb_single(x, cos, sin, position_ids):
@@ -100,12 +99,3 @@ def mistral_pos_shift_attention_forward(
         attn_weights = None
 
     return attn_output, attn_weights, past_key_value
-
-
-def enable_mistral_pos_shift_attention(model):
-    for name, module in reversed(model._modules.items()):
-        if len(list(module.children())) > 0:
-            enable_mistral_pos_shift_attention(module)
-
-        if isinstance(module, MistralAttention):
-            model._modules[name].forward = types.MethodType(mistral_pos_shift_attention_forward, model._modules[name])

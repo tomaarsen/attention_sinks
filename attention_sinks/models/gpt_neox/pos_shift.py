@@ -3,14 +3,13 @@ Adapted from https://github.com/mit-han-lab/streaming-llm
 """
 
 
-import types
 from typing import Optional, Tuple
 
 import torch
 import torch.utils.checkpoint
-from transformers.models.gpt_neox.modeling_gpt_neox import GPTNeoXAttention, rotate_half
+from transformers.models.gpt_neox.modeling_gpt_neox import rotate_half
 
-__all__ = ["enable_gpt_neox_pos_shift_attention"]
+__all__ = ["gpt_neox_pos_shift_attention_forward"]
 
 
 def apply_rotary_pos_emb_single(x, cos, sin, position_ids):
@@ -88,12 +87,3 @@ def gpt_neox_pos_shift_attention_forward(
         outputs += (attn_weights,)
 
     return outputs
-
-
-def enable_gpt_neox_pos_shift_attention(model):
-    for name, module in reversed(model._modules.items()):
-        if len(list(module.children())) > 0:
-            enable_gpt_neox_pos_shift_attention(module)
-
-        if isinstance(module, GPTNeoXAttention):
-            module.forward = types.MethodType(gpt_neox_pos_shift_attention_forward, module)

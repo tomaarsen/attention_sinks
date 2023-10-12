@@ -5,3 +5,4 @@ from .modeling_gptj import (
     GPTJModel,
     GPTJPreTrainedModel,
 )
+from .pos_shift import gptj_pos_shift_attention_forward

@@ -1,12 +1,11 @@
 import math
-import types
 from typing import Optional, Tuple
 
 import torch
 import torch.nn.functional as F
 import torch.utils.checkpoint
 
-__all__ = ["enable_falcon_pos_shift_attention"]
+__all__ = ["falcon_pos_shift_attention_forward"]
 
 
 def falcon_pos_shift_attention_forward(
@@ -134,12 +133,3 @@ def falcon_pos_shift_attention_forward(
             return output_tensor, present, attention_probs
         else:
             return output_tensor, present
-
-
-def enable_falcon_pos_shift_attention(model):
-    for name, module in reversed(model._modules.items()):
-        if len(list(module.children())) > 0:
-            enable_falcon_pos_shift_attention(module)
-
-        if "self_attention" == name[-14:]:
-            model._modules[name].forward = types.MethodType(falcon_pos_shift_attention_forward, model._modules[name])
