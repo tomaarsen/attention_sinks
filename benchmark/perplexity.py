@@ -128,7 +128,6 @@ def main():
         from transformers import AutoModelForCausalLM
     else:
         from attention_sinks import AutoModelForCausalLM
-
     kwargs = {}
     if args.experiment == "attention_sinks":
         kwargs = {
