@@ -17,10 +17,12 @@ The following figures plot model perplexities under the various different approa
 | ![mpt_7b_ppl_vram_plotted](https://github.com/mit-han-lab/streaming-llm/assets/37621491/c96cff66-92a3-43ab-bc21-40232f2740a0) | ![pythia_6 8b_ppl_vram_plotted](https://github.com/tomaarsen/attention_sinks/assets/37621491/b0fee168-fa5a-457d-9e27-8395eb6dfb38) |
 | **Mistral-7B-v0.1** | **GPT-J-6B** |
 | ![mistral_7b_ppl_vram_plotted](https://github.com/microsoft/torchscale/assets/37621491/3a4c5634-cc1b-42d1-a35a-afb376a4f970) | ![gpt_j_6b_ppl_vram_plotted](https://github.com/tomaarsen/attention_sinks/assets/37621491/bdca944f-2fd2-46c4-8a88-2e1a8f16f75f) |
+| **Qwen-7B** | |
+| ![qwen_7b_ppl_vram_plotted](https://github.com/tomaarsen/attention_sinks/assets/37621491/ecf8beaf-7f8b-4412-bdcc-1d7f78b265bd) | |
 
 The results are clear as day:
-1. `transformers`: The VRAM usage is linear as it doesn't do any windowing. The performance heavily falls after ~4096 tokens.
-2. `windowed`: The VRAM is constant usage due to the windowing at 1024 tokens. However, it fails as soon as the first tokens leave the window.
+1. `transformers`: The VRAM usage is linear as it doesn't do any windowing. The performance heavily falls after the pretraining length.
+2. `windowed`: The VRAM is constant usage due to the windowing at 1024 tokens. However, the performance falls as soon as the first tokens leave the window.
 3. `attention_sinks`: Constant VRAM usage due to windowing with 4 attention sink tokens + the 1020 most recent tokens. This approach never fails despite the constant VRAM usage.
 
 ### Fluency during endless generation
@@ -59,9 +61,8 @@ This repository is an open-source implementation of the [Efficient Streaming Lan
 
   model = AutoModel.from_pretrained("meta-llama/Llama-2-7b-hf", device_map="auto")
   ```
-* Support for Llama, Mistral, Falcon, MPT, GPTNeoX (Pythia) and GPT-J models.
-  * Note: All of these models must be loaded **without** `trust_remote_code=True`.
-* New parameters to `AutoModel....from_pretrained`:
+* Support for Llama, Mistral, Falcon, MPT, GPTNeoX (Pythia), GPT-J and Qwen models.
+* New parameters to `AutoModelForCausalLM.from_pretrained`:
   * `attention_sink_size`, `int`, defaults to 4: The number of initial tokens to use as the attention sink. These tokens are always included in the Attention Sink KV Cache.
   * `attention_sink_window_size`, `int`, defaults to 1020: The size of the sliding window, i.e. the number of "recent tokens" to include in the Attention Sink KV Cache. A larger window size costs more memory.
 
@@ -74,11 +75,11 @@ pip install attention_sinks
 ```
 
 ### Usage
-Loading any Llama, Mistral, Falcon, MPT, GPTNeoX (Pythia) and GPT-J model is as simple as loading it in `transformers`, the only change is that the model class must be imported from `attention_sinks` rather than `transformers`, e.g.:
+Loading any Llama, Mistral, Falcon, MPT, GPTNeoX (Pythia), GPT-J and Qwen is as simple as loading it in `transformers`, the only change is that the model class must be imported from `attention_sinks` rather than `transformers`, e.g.:
 ```python
-from attention_sinks import AutoModel
+from attention_sinks import AutoModelForCausalLM
 
-model = AutoModel.from_pretrained("mosaicml/mpt-7b", device_map="auto")
+model = AutoModelForCausalLM.from_pretrained("mosaicml/mpt-7b", device_map="auto")
 ```
 
 Generation can be done like you would expect from `transformers`, e.g. like so:
