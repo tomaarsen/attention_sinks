@@ -7,16 +7,16 @@ from dataclasses import dataclass
 import torch
 
 
+def slice1d(x, start, end):
+    return x[:, start:end, ...]
+
+
 def slice2d(x, start, end):
     return x[:, :, start:end, ...]
 
 
 def slice3d(x, start, end):
     return x[:, :, :, start:end, ...]
-
-
-def slice1d(x, start, end):
-    return x[:, start:end, ...]
 
 
 DIM_TO_SLICE = {

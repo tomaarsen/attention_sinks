@@ -6,3 +6,4 @@ from .modeling_falcon import (
     FalconModel,
     FalconPreTrainedModel,
 )
+from .pos_shift import falcon_pos_shift_attention_forward

@@ -3,3 +3,4 @@ from .modeling_mistral import (
     MistralForSequenceClassification,
     MistralModel,
 )
+from .pos_shift import mistral_pos_shift_attention_forward

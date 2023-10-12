@@ -4,16 +4,15 @@ Adapted from https://github.com/mit-han-lab/streaming-llm
 
 
 import math
-import types
 from typing import Optional, Tuple
 
 import torch
 import torch.nn.functional as F
 import torch.utils.checkpoint
 from torch import nn
-from transformers.models.llama.modeling_llama import LlamaAttention, repeat_kv, rotate_half
+from transformers.models.llama.modeling_llama import repeat_kv, rotate_half
 
-__all__ = ["enable_llama_pos_shift_attention"]
+__all__ = ["llama_pos_shift_attention_forward"]
 
 
 def apply_rotary_pos_emb_single(x, cos, sin, position_ids):
@@ -126,12 +125,3 @@ def llama_pos_shift_attention_forward(
         attn_weights = None
 
     return attn_output, attn_weights, past_key_value
-
-
-def enable_llama_pos_shift_attention(model):
-    for name, module in reversed(model._modules.items()):
-        if len(list(module.children())) > 0:
-            enable_llama_pos_shift_attention(module)
-
-        if isinstance(module, LlamaAttention):
-            model._modules[name].forward = types.MethodType(llama_pos_shift_attention_forward, model._modules[name])
