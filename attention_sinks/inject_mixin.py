@@ -5,7 +5,7 @@ from transformers import PreTrainedModel
 from transformers.utils import logging
 
 from attention_sinks.attention_sink_kv_cache import AttentionSinkKVCache
-from attention_sinks.generation.utils import GenerationMixin
+from attention_sinks.generation.utils import _update_model_kwargs_for_generation
 
 logger = logging.get_logger(__name__)
 
@@ -35,7 +35,7 @@ KV_DIM_MAPPING = {
 }
 
 
-class InjectAttentionSinksMixin(GenerationMixin):
+class InjectAttentionSinksMixin:
     @classmethod
     def from_pretrained(cls, pretrained_model_name_or_path, *model_args, **kwargs):
         # Separate Attention Sink kwargs from regular kwargs
@@ -66,6 +66,11 @@ class InjectAttentionSinksMixin(GenerationMixin):
         logger.warn(
             f"[Attention Sinks] Injected Attention Sink KV Cache into {call_count} model class{'es' if call_count != 1 else ''}."
         )
+
+        # Overwrite broken model kwargs, prevents indexing error when generating
+        # The default _update_model_kwargs_for_generation expects the seq_length to keep growing
+        # as generation occurs, but that isn't the case
+        model._update_model_kwargs_for_generation = types.MethodType(_update_model_kwargs_for_generation, model)
 
         return model
 
