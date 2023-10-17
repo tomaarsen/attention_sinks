@@ -15,6 +15,16 @@ Types of changes
 * "Security" in case of vulnerabilities.
 -->
 
+## [Unreleased]
+
+### Added
+
+- Added support for Qwen models. ([#15](https://github.com/tomaarsen/attention_sinks/pull/15))
+
+### Changed
+
+- Changed how Attention Sinks are injected into models, allows `attention_sinks` to be integrated with architectures that aren't in `transformers` ([#16](https://github.com/tomaarsen/attention_sinks/pull/16))
+
 ## [0.2.3] - 2023-10-10
 
 ### Added

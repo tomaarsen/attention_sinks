@@ -46,3 +46,4 @@ from .mpt import (
     MptModel,
     MptPreTrainedModel,
 )
+from .qwen import qwen_pos_shift_attention_forward
