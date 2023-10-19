@@ -17,8 +17,8 @@ The following figures plot model perplexities under the various different approa
 | ![mpt_7b_ppl_vram_plotted](https://github.com/mit-han-lab/streaming-llm/assets/37621491/c96cff66-92a3-43ab-bc21-40232f2740a0) | ![pythia_6 8b_ppl_vram_plotted](https://github.com/tomaarsen/attention_sinks/assets/37621491/b0fee168-fa5a-457d-9e27-8395eb6dfb38) |
 | **Mistral-7B-v0.1** | **GPT-J-6B** |
 | ![mistral_7b_ppl_vram_plotted](https://github.com/microsoft/torchscale/assets/37621491/3a4c5634-cc1b-42d1-a35a-afb376a4f970) | ![gpt_j_6b_ppl_vram_plotted](https://github.com/tomaarsen/attention_sinks/assets/37621491/bdca944f-2fd2-46c4-8a88-2e1a8f16f75f) |
-| **Qwen-7B** | |
-| ![qwen_7b_ppl_vram_plotted](https://github.com/tomaarsen/attention_sinks/assets/37621491/ecf8beaf-7f8b-4412-bdcc-1d7f78b265bd) | |
+| **Qwen-7B** | **StableLM-3B-4E1T** |
+| ![qwen_7b_ppl_vram_plotted](https://github.com/tomaarsen/attention_sinks/assets/37621491/ecf8beaf-7f8b-4412-bdcc-1d7f78b265bd) | ![stablelm_3b_4e1t_ppl_vram_plotted](https://github.com/tomaarsen/attention_sinks/assets/37621491/d1170e63-870a-404c-99a1-03eebd62422e) |
 
 The results are clear as day:
 1. `transformers`: The VRAM usage is linear as it doesn't do any windowing. The performance heavily falls after the pretraining length.
@@ -61,7 +61,7 @@ This repository is an open-source implementation of the [Efficient Streaming Lan
 
   model = AutoModel.from_pretrained("meta-llama/Llama-2-7b-hf", device_map="auto")
   ```
-* Support for Llama, Mistral, Falcon, MPT, GPTNeoX (Pythia), GPT-J and Qwen models.
+* Support for Llama, Mistral, Falcon, MPT, GPTNeoX (Pythia), GPT-J, Qwen and StableLM_epoch models.
 * New parameters to `AutoModelForCausalLM.from_pretrained`:
   * `attention_sink_size`, `int`, defaults to 4: The number of initial tokens to use as the attention sink. These tokens are always included in the Attention Sink KV Cache.
   * `attention_sink_window_size`, `int`, defaults to 1020: The size of the sliding window, i.e. the number of "recent tokens" to include in the Attention Sink KV Cache. A larger window size costs more memory.
@@ -75,7 +75,7 @@ pip install attention_sinks
 ```
 
 ### Usage
-Loading any Llama, Mistral, Falcon, MPT, GPTNeoX (Pythia), GPT-J and Qwen is as simple as loading it in `transformers`, the only change is that the model class must be imported from `attention_sinks` rather than `transformers`, e.g.:
+Loading any Llama, Mistral, Falcon, MPT, GPTNeoX (Pythia), GPT-J, Qwen or StableLM_epoch model is as simple as loading it in `transformers`, the only change is that the model class must be imported from `attention_sinks` rather than `transformers`, e.g.:
 ```python
 from attention_sinks import AutoModelForCausalLM
 
@@ -264,6 +264,12 @@ See [CHANGELOG.md](CHANGELOG.md) for all release information.
 ## Credits
 
 Inspired by, and adapted from [StreamingLLM](https://github.com/mit-han-lab/streaming-llm).
+
+### Model Contributions
+A big thanks to the following contributors for extending the model support of `attention_sinks`!
+
+* [@Sanster](https://github.com/Sanster) for adding support for QWen models.
+* [@kmn1024](https://github.com/kmn1024) for adding support for StableLM_Epoch models.
 
 ### Citation
 

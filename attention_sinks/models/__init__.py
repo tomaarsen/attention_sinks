@@ -47,3 +47,4 @@ from .mpt import (
     MptPreTrainedModel,
 )
 from .qwen import qwen_pos_shift_attention_forward
+from .stablelm_epoch import stablelm_epoch_pos_shift_attention_forward
