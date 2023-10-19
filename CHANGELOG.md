@@ -15,7 +15,7 @@ Types of changes
 * "Security" in case of vulnerabilities.
 -->
 
-## [Unreleased]
+## [0.3.0] - 2023-10-19
 
 ### Added
 
