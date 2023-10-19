@@ -265,6 +265,12 @@ See [CHANGELOG.md](CHANGELOG.md) for all release information.
 
 Inspired by, and adapted from [StreamingLLM](https://github.com/mit-han-lab/streaming-llm).
 
+### Model Contributions
+A big thanks to the following contributors for extending the model support of `attention_sinks`!
+
+* [@Sanster](https://github.com/Sanster) for adding support for QWen models.
+* [@kmn1024](https://github.com/kmn1024) for adding support for StableLM_Epoch models.
+
 ### Citation
 
 ```bibtex
