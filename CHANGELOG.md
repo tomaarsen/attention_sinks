@@ -20,6 +20,7 @@ Types of changes
 ### Added
 
 - Added support for Qwen models. ([#15](https://github.com/tomaarsen/attention_sinks/pull/15))
+- Added support for StableLM_Epoch models. ([#20](https://github.com/tomaarsen/attention_sinks/pull/20))
 
 ### Changed
 
