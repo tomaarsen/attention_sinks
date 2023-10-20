@@ -56,7 +56,12 @@ def plot(
             Y = df[FEATURE_DF_MAP[feature]][skip_first:]
             if feature == "perplexity":
                 Y = np.log(Y)
-            ax.plot(X, Y, FEATURE_STYLE_MAP[feature], label=f"{experiment} {feature}")
+            if feature == "latency":
+                poly = np.polyfit(X, Y, 20)
+                poly_y = np.poly1d(poly)(X)
+                ax.plot(X, poly_y, FEATURE_STYLE_MAP[feature], label=f"{experiment} {feature}")
+            else:
+                ax.plot(X, Y, FEATURE_STYLE_MAP[feature], label=f"{experiment} {feature}")
 
         ax.set_ylabel(FEATURE_LABEL_MAP[feature])
         if perplexity_limit and feature == "perplexity":
@@ -64,7 +69,7 @@ def plot(
 
         ax.legend(loc=[1, 2, 7][feature_i])  # upper right, upper left, center right
 
-    ax.set_title(title or "Log perplexity as a function of input lengths")
+    ax.set_title(title.replace("\\n", "\n") or "Log perplexity as a function of input lengths")
     fig.tight_layout()
 
     return fig
