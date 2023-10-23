@@ -27,11 +27,16 @@ def _update_model_kwargs_for_generation(
         # update attention mask
         if "attention_mask" in model_kwargs:
             attention_mask = model_kwargs["attention_mask"]
-            # Only this `if`-statement is changed, it's required to stop the attention_mask from extending itself too far
-            if model_kwargs["attention_mask"].size(-1) == model_kwargs["past_key_values"][0][0].size(2):
+            # Only this branch is changed, it's required to stop the attention_mask from extending itself too far
+            attention_mask_size = model_kwargs["attention_mask"].size(-1)
+            past_key_values_size = model_kwargs["past_key_values"][0][0].size(2)
+            if attention_mask_size == past_key_values_size:
                 model_kwargs["attention_mask"] = torch.cat(
                     [attention_mask, attention_mask.new_ones((attention_mask.shape[0], 1))], dim=-1
                 )
+            elif attention_mask_size > past_key_values_size:
+                model_kwargs["attention_mask"] = model_kwargs["attention_mask"][..., : past_key_values_size + 1]
+
     else:
         # update decoder attention mask
         if "decoder_attention_mask" in model_kwargs:
