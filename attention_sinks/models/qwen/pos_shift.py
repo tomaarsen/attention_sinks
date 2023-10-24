@@ -36,6 +36,11 @@ def qwen_pos_shift_attention_forward(
     output_attentions: Optional[bool] = False,
     use_cache: Optional[bool] = False,
 ):
+    if registered_causal_mask is None:
+        raise ValueError(
+            "Attention Sinks does not support Flash Attention in QWen models, please use `use_flash_attn=False` in `AutoModelForCausalLM.from_pretrained`."
+        )
+
     mixed_x_layer = self.c_attn(hidden_states)
 
     query, key, value = mixed_x_layer.split(self.split_size, dim=2)
