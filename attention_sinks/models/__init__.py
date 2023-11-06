@@ -45,7 +45,7 @@ from .mpt import (
     MptForTokenClassification,
     MptModel,
     MptPreTrainedModel,
-    mpt_pos_shift_attention_forward
 )
 from .qwen import qwen_pos_shift_attention_forward
 from .stablelm_epoch import stablelm_epoch_pos_shift_attention_forward
+from .yi import yi_pos_shift_attention_forward

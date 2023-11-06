@@ -17,7 +17,8 @@ MODEL_NAME_MAPPING = {
     "gptj": "GPTJModel",
     "mistral": "MistralModel",
     "qwen": "QWenModel",
-    "stablelm_epoch": "StableLMEpochModel"
+    "stablelm_epoch": "StableLMEpochModel",
+    "Yi" : "YiModel"
 }
 ATTENTION_NAME_MAPPING = {
     "llama": "LlamaAttention",
@@ -28,6 +29,7 @@ ATTENTION_NAME_MAPPING = {
     "mistral": "MistralAttention",
     "qwen": "QWenAttention",
     "stablelm_epoch": "Attention",
+    "Yi" : "YiAttention"
 }
 KV_DIM_MAPPING = {
     "llama": (2, 2),
@@ -38,6 +40,7 @@ KV_DIM_MAPPING = {
     "mistral": (2, 2),
     "qwen": (1, 1),
     "stablelm_epoch": (2, 2),
+    "Yi" : (2, 2),
 }
 
 
@@ -87,23 +90,24 @@ class InjectAttentionSinksMixin:
         from attention_sinks.models import (
             falcon_pos_shift_attention_forward,
             gpt_neox_pos_shift_attention_forward,
-            mpt_pos_shift_attention_forward,
             gptj_pos_shift_attention_forward,
             llama_pos_shift_attention_forward,
             mistral_pos_shift_attention_forward,
             qwen_pos_shift_attention_forward,
             stablelm_epoch_pos_shift_attention_forward,
+            yi_pos_shift_attention_forward
         )
 
         ATTENTION_FORWARD_MAPPING = {
             "llama": llama_pos_shift_attention_forward,
             "falcon": falcon_pos_shift_attention_forward,
-            "mpt": mpt_pos_shift_attention_forward,
+            "mpt": None,
             "gpt_neox": gpt_neox_pos_shift_attention_forward,
             "gptj": gptj_pos_shift_attention_forward,
             "mistral": mistral_pos_shift_attention_forward,
             "qwen": qwen_pos_shift_attention_forward,
             "stablelm_epoch": stablelm_epoch_pos_shift_attention_forward,
+            "Yi" : yi_pos_shift_attention_forward,
         }
 
         # Not all models require updated attention forwards
