@@ -87,6 +87,7 @@ class InjectAttentionSinksMixin:
         from attention_sinks.models import (
             falcon_pos_shift_attention_forward,
             gpt_neox_pos_shift_attention_forward,
+            mpt_pos_shift_attention_forward,
             gptj_pos_shift_attention_forward,
             llama_pos_shift_attention_forward,
             mistral_pos_shift_attention_forward,
@@ -97,7 +98,7 @@ class InjectAttentionSinksMixin:
         ATTENTION_FORWARD_MAPPING = {
             "llama": llama_pos_shift_attention_forward,
             "falcon": falcon_pos_shift_attention_forward,
-            "mpt": None,
+            "mpt": mpt_pos_shift_attention_forward,
             "gpt_neox": gpt_neox_pos_shift_attention_forward,
             "gptj": gptj_pos_shift_attention_forward,
             "mistral": mistral_pos_shift_attention_forward,
