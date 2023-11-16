@@ -17,7 +17,8 @@ MODEL_NAME_MAPPING = {
     "gptj": "GPTJModel",
     "mistral": "MistralModel",
     "qwen": "QWenModel",
-    "stablelm_epoch": "StableLMEpochModel"
+    "stablelm_epoch": "StableLMEpochModel",
+    "btlm": "BTLMModel",
 }
 ATTENTION_NAME_MAPPING = {
     "llama": "LlamaAttention",
@@ -28,6 +29,7 @@ ATTENTION_NAME_MAPPING = {
     "mistral": "MistralAttention",
     "qwen": "QWenAttention",
     "stablelm_epoch": "Attention",
+    "btlm": "BTLMAttention",
 }
 KV_DIM_MAPPING = {
     "llama": (2, 2),
@@ -38,6 +40,7 @@ KV_DIM_MAPPING = {
     "mistral": (2, 2),
     "qwen": (1, 1),
     "stablelm_epoch": (2, 2),
+    "btlm": (2, 2),
 }
 
 
@@ -103,6 +106,7 @@ class InjectAttentionSinksMixin:
             "mistral": mistral_pos_shift_attention_forward,
             "qwen": qwen_pos_shift_attention_forward,
             "stablelm_epoch": stablelm_epoch_pos_shift_attention_forward,
+            "btlm": None,
         }
 
         # Not all models require updated attention forwards
