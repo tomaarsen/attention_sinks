@@ -19,6 +19,8 @@ The following figures plot model perplexities under the various different approa
 | ![mistral_7b_ppl_vram_plotted](https://github.com/microsoft/torchscale/assets/37621491/3a4c5634-cc1b-42d1-a35a-afb376a4f970) | ![gpt_j_6b_ppl_vram_plotted](https://github.com/tomaarsen/attention_sinks/assets/37621491/bdca944f-2fd2-46c4-8a88-2e1a8f16f75f) |
 | **Qwen-7B** | **StableLM-3B-4E1T** |
 | ![qwen_7b_ppl_vram_plotted](https://github.com/tomaarsen/attention_sinks/assets/37621491/ecf8beaf-7f8b-4412-bdcc-1d7f78b265bd) | ![stablelm_3b_4e1t_ppl_vram_plotted](https://github.com/tomaarsen/attention_sinks/assets/37621491/d1170e63-870a-404c-99a1-03eebd62422e) |
+| **BTLM-3B-8k-base** | |
+| ![btlm_3b_8k_base_ppl_vram_plotted](https://github.com/tomaarsen/attention_sinks/assets/37621491/4ea8c754-fc58-49c5-b5df-58c2e0eb178b)| |
 
 The results are clear as day:
 1. `transformers`: The VRAM usage is linear as it doesn't do any windowing. The performance heavily falls after the pretraining length.
