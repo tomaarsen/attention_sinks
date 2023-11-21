@@ -19,6 +19,7 @@ MODEL_NAME_MAPPING = {
     "qwen": "QWenModel",
     "stablelm_epoch": "StableLMEpochModel",
     "btlm": "BTLMModel",
+    "Yi": "YiModel",
 }
 ATTENTION_NAME_MAPPING = {
     "llama": "LlamaAttention",
@@ -30,6 +31,7 @@ ATTENTION_NAME_MAPPING = {
     "qwen": "QWenAttention",
     "stablelm_epoch": "Attention",
     "btlm": "BTLMAttention",
+    "Yi": "YiAttention",
 }
 KV_DIM_MAPPING = {
     "llama": (2, 2),
@@ -41,6 +43,7 @@ KV_DIM_MAPPING = {
     "qwen": (1, 1),
     "stablelm_epoch": (2, 2),
     "btlm": (2, 2),
+    "Yi": (2, 2),
 }
 
 
@@ -95,6 +98,7 @@ class InjectAttentionSinksMixin:
             mistral_pos_shift_attention_forward,
             qwen_pos_shift_attention_forward,
             stablelm_epoch_pos_shift_attention_forward,
+            yi_pos_shift_attention_forward,
         )
 
         ATTENTION_FORWARD_MAPPING = {
@@ -107,6 +111,7 @@ class InjectAttentionSinksMixin:
             "qwen": qwen_pos_shift_attention_forward,
             "stablelm_epoch": stablelm_epoch_pos_shift_attention_forward,
             "btlm": None,
+            "Yi": yi_pos_shift_attention_forward,
         }
 
         # Not all models require updated attention forwards
