@@ -15,6 +15,18 @@ Types of changes
 * "Security" in case of vulnerabilities.
 -->
 
+## [0.4.0] - 2023-11-23
+
+### Added
+
+- Added support for Yi models. ([#27](https://github.com/tomaarsen/attention_sinks/pull/27))
+- Added support for BTLM models. ([#29](https://github.com/tomaarsen/attention_sinks/pull/29))
+
+### Fixed
+
+- Prevent crash if large input is provided. ([#23](https://github.com/tomaarsen/attention_sinks/pull/23))
+- Update QWen to match recent updates to the QWen modeling files. ([#33](https://github.com/tomaarsen/attention_sinks/pull/33))
+
 ## [0.3.0] - 2023-10-19
 
 ### Added
