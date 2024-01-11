@@ -6,7 +6,9 @@ from transformers import AutoModelForTokenClassification as TAutoModelForTokenCl
 
 from attention_sinks.inject_mixin import InjectAttentionSinksMixin
 
-
+from auto_gptq import AutoGPTQForCausalLM as TAutoGPTQForCausalLM
+class AutoGPTQForCausalLM(InjectAttentionSinksMixin, TAutoGPTQForCausalLM):
+    pass
 class AutoModel(InjectAttentionSinksMixin, TAutoModel):
     pass
 
