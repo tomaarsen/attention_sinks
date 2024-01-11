@@ -1,5 +1,6 @@
 from .auto import (
     AutoModel,
+    AutoGPTQForCausalLM,
     AutoModelForCausalLM,
     AutoModelForQuestionAnswering,
     AutoModelForSequenceClassification,
