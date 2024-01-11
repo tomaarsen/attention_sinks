@@ -1,10 +1,11 @@
 __version__ = "0.4.1.dev"
-
+#from auto_gptq import AutoGPTQForCausalLM
 from transformers import AutoTokenizer
 
 from .attention_sink_kv_cache import AttentionSinkKVCache
 from .models import (
     AutoModel,
+    AutoGPTQForCausalLM,
     AutoModelForCausalLM,
     AutoModelForQuestionAnswering,
     AutoModelForSequenceClassification,

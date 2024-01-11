@@ -4,4 +4,5 @@ from .modeling_auto import (
     AutoModelForQuestionAnswering,
     AutoModelForSequenceClassification,
     AutoModelForTokenClassification,
+    AutoGPTQForCausalLM,
 )
