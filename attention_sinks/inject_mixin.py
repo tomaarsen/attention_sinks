@@ -85,7 +85,43 @@ class InjectAttentionSinksMixin:
         model._update_model_kwargs_for_generation = types.MethodType(_update_model_kwargs_for_generation, model)
 
         return model
+    @classmethod
+    def from_quantized(cls, pretrained_model_name_or_path, *model_args, **kwargs):
+        # Separate Attention Sink kwargs from regular kwargs
+        attention_sink_kwargs = {key: value for key, value in kwargs.items() if key.startswith("attention_sink")}
+        for key in attention_sink_kwargs:
+            kwargs.pop(key)
 
+        model = super().from_quantized(
+            pretrained_model_name_or_path,
+            *model_args,
+            **kwargs,
+        )
+        model_type = model.config.model_type
+        if model_type not in MODEL_NAME_MAPPING:
+            raise NotImplementedError(
+                f"`attention_sinks` does not support models with the `{model_type}` architecture at this time."
+            )
+
+        # Enable position shifting attention
+        call_count = cls._inject_pos_shift_attention(model)
+        if call_count is not None:
+            logger.warn(
+                f"[Attention Sinks] Injected Position Shifting into {call_count} attention class{'es' if call_count != 1 else ''}."
+            )
+
+        # Inject the Attention Sink KV Cache to the model
+        call_count = cls._inject_attention_sink_kv_cache(model, **attention_sink_kwargs)
+        logger.warn(
+            f"[Attention Sinks] Injected Attention Sink KV Cache into {call_count} model class{'es' if call_count != 1 else ''}."
+        )
+
+        # Overwrite broken model kwargs, prevents indexing error when generating
+        # The default _update_model_kwargs_for_generation expects the seq_length to keep growing
+        # as generation occurs, but that isn't the case
+        model._update_model_kwargs_for_generation = types.MethodType(_update_model_kwargs_for_generation, model)
+
+        return model
     @classmethod
     def _inject_pos_shift_attention(cls, model: PreTrainedModel) -> Optional[int]:
         model_type = model.config.model_type
